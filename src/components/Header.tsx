@@ -20,11 +20,19 @@ const Header = () => {
           isMenuOpen ? 'h-[140px] px-6 py-4' : 'h-0 p-0'
         } md:h-auto md:flex-row-reverse md:bg-transparent md:justify-start md:px-14 md:py-4 md:text-2xl md:absolute md:top-10 md:left-0 md:gap-10 md:z-20`}
       >
-        <a href='#login-section' className='text-primaryBlue font-extrabold'>
+        <a
+          href='#login-section'
+          className='text-primaryBlue font-extrabold'
+          onClick={() => setIsMenuOpen(false)}
+        >
           Login
         </a>
-        <a href='#content-1'>Content 1</a>
-        <a href='#content-2'>Content 2</a>
+        <a href='#content-1' onClick={() => setIsMenuOpen(false)}>
+          Content 1
+        </a>
+        <a href='#content-2' onClick={() => setIsMenuOpen(false)}>
+          Content 2
+        </a>
       </div>
     </header>
   )

@@ -27,12 +27,14 @@ const Header = () => {
         >
           Login
         </a>
-        <a href='#content-1' onClick={() => setIsMenuOpen(false)}>
-          Content 1
-        </a>
-        <a href='#content-2' onClick={() => setIsMenuOpen(false)}>
-          Content 2
-        </a>
+        <div className='flex flex-col gap-4 md:flex-row md:gap-10'>
+          <a href='#content-1' onClick={() => setIsMenuOpen(false)}>
+            Content 1
+          </a>
+          <a href='#content-2' onClick={() => setIsMenuOpen(false)}>
+            Content 2
+          </a>
+        </div>
       </div>
     </header>
   )

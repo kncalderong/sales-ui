@@ -3,7 +3,7 @@ import { faMountainSun } from '@fortawesome/free-solid-svg-icons'
 
 const LandingCard = () => {
   return (
-    <div className='flex flex-col gap-4 w-full md:w-[calc(50%-1rem)] lg:w-[calc(25%-3rem)]'>
+    <div className='flex flex-col gap-4 w-full md:w-[calc(50%-1rem)] lg:w-[calc((100%-9rem)/4)]'>
       <div className='aspect-square bg-primaryBlue flex justify-center items-center'>
         <FontAwesomeIcon
           icon={faMountainSun}

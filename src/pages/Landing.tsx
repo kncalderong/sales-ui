@@ -1,4 +1,5 @@
 import Header from '../components/Header'
+import LandingCard from '../components/LandingCard'
 
 /* import { Navigate } from 'react-router-dom';
 import { useAppContext } from '../context/appContext'; */
@@ -26,7 +27,26 @@ const Landing = () => {
           </div>
         </div>
       </div>
-      <div id='content-1' className='min-h-screen'></div>
+      <div
+        id='content-1'
+        className='min-h-screen flex flex-col items-center pt-8 gap-8 lg:justify-center lg:gap-12'
+      >
+        <div className='flex flex-col gap-4 w-10/12'>
+          <h1 className='text-slate-700 text-3xl md:text-[4rem] md:leading-[4rem] md:font-extrabold'>
+            Content 1
+          </h1>
+          <p className='text-slate-400 md:text-lg md:max-w-[50%]'>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua
+          </p>
+        </div>
+        <div className='flex flex-wrap w-10/12 gap-4 lg:gap-12 max-w-[1440px]'>
+          <LandingCard />
+          <LandingCard />
+          <LandingCard />
+          <LandingCard />
+        </div>
+      </div>
       <div id='content-2' className='min-h-screen'></div>
     </main>
   )

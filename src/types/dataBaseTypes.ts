@@ -46,4 +46,21 @@ export interface BranchOfficeType {
     | 'Panama'
     | 'Mexico'
     | 'Uruguay'
+  currency: string
+}
+
+export interface SaleType {
+  client: {
+    clientRUT: string
+    clientName: string
+  }
+  branchOffice: BranchOfficeType
+  details: {
+    quantity: number
+    productId: number
+    productName: string
+    unitPrice: number
+    subTotal: number
+  }[]
+  total: number
 }

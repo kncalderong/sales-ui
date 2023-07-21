@@ -1,15 +1,24 @@
+import { useState } from 'react'
 import Header from '../components/Header'
 import LandingCard from '../components/LandingCard'
+import LoginRegisterForm from '../components/Forms/LoginRegisterForm'
 
 /* import { Navigate } from 'react-router-dom';
 import { useAppContext } from '../context/appContext'; */
 
 const Landing = () => {
   //const { user } = useAppContext();
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen)
+  }
+
   return (
     <main className={`min-h-screen w-full`}>
       {/* {user && <Navigate to='/' />} */}
-      <Header />
+      {isModalOpen && <LoginRegisterForm toggleModal={toggleModal} />}
+      <Header toggleModal={toggleModal} />
       <div
         id='login-section'
         className=' relative min-h-screen bg-[url("/bg-landing.png")] bg-no-repeat bg-[-360px_-10px] md:bg-[-75%_-10px] xl:bg-right'
@@ -22,7 +31,10 @@ const Landing = () => {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua
           </p>
-          <div className='cursor-pointer text-white bg-primaryBlue flex justify-center items-center px-8 py-4 w-[140px] mt-12 md:text-2xl'>
+          <div
+            className='cursor-pointer text-white bg-primaryBlue flex justify-center items-center px-8 py-4 w-[140px] mt-12 md:text-2xl'
+            onClick={toggleModal}
+          >
             Login
           </div>
         </div>

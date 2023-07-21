@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Signin, Landing, Error, ProtectedRoute } from './pages'
+import { Landing, Error, ProtectedRoute } from './pages'
 import {
   AllSales,
   NewSale,
@@ -24,7 +24,6 @@ function App() {
           <Route path='sales/:id' element={<Sale />} />
           <Route path='profile' element={<Profile />} />
         </Route>
-        <Route path='/sign-in' element={<Signin />} />
         <Route path='/landing' element={<Landing />} />
         <Route path='*' element={<Error />} />
       </Routes>

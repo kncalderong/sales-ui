@@ -2,7 +2,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
 
-const Header = () => {
+const Header = ({ toggleModal }: { toggleModal: () => void }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   return (
     <header className='relative w-full'>
@@ -21,9 +21,12 @@ const Header = () => {
         } md:h-auto md:flex-row-reverse md:bg-transparent md:justify-start md:px-14 md:py-4 md:text-2xl md:absolute md:top-10 md:left-0 md:gap-10 md:z-20`}
       >
         <a
-          href='#login-section'
+          href='#'
           className='text-primaryBlue font-extrabold'
-          onClick={() => setIsMenuOpen(false)}
+          onClick={() => {
+            setIsMenuOpen(false)
+            toggleModal()
+          }}
         >
           Login
         </a>

@@ -1,14 +1,26 @@
 import { GlobalStateType } from './types/globalState'
-import { ActionKind, GlobalStateActions } from './types/actions'
+import { ReducerActionType, ReducerAction } from './types/actions'
 
-const reducer = (state: GlobalStateType, action: GlobalStateActions) => {
-  if (action.type === ActionKind.TOGGLE_THEME) {
+const reducer = (state: GlobalStateType, action: ReducerAction) => {
+  if (action.type === ReducerActionType.TOGGLE_THEME) {
     return {
       ...state,
       darkTheme: action.payload.darkTheme,
     }
   }
-  throw new Error(`no such action : ${action.type}`)
+  if (action.type === ReducerActionType.SETUP_SELLER) {
+    return {
+      ...state,
+      seller: action.payload.seller,
+    }
+  }
+  if (action.type === ReducerActionType.LOGOUT_SELLER) {
+    return {
+      ...state,
+      seller: null,
+    }
+  }
+  return state
 }
 
 export default reducer

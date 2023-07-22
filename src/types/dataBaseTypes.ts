@@ -6,7 +6,7 @@ export interface SellerType {
   phone: string
   birthDate: string
   email: string
-  hashedPassword: string
+  hashedPassword?: string
 }
 
 export interface ClientType {

@@ -4,12 +4,12 @@ type FormRowProps = {
   name: string
   label: string
   type: string
-  /*   ref: React.RefObject<HTMLInputElement> */
+  resetAlert?: () => void
 }
 
 const FormRow = React.forwardRef(
   (
-    { name, label, type }: FormRowProps,
+    { name, label, type, resetAlert }: FormRowProps,
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
     return (
@@ -28,6 +28,7 @@ const FormRow = React.forwardRef(
             name={name}
             className='border border-slate-300 bg-transparent rounded px-2 py-1 outline-none focus-within:border-desaturated-dark-cyan w-full lg:text-lg'
             pattern='[^@]+@[^@]+\.[a-zA-Z]{2,6}'
+            onChange={resetAlert}
           />
         ) : (
           <input
@@ -36,6 +37,11 @@ const FormRow = React.forwardRef(
             type={type}
             name={name}
             className='border border-slate-300 bg-transparent rounded px-2 py-1 outline-none focus-within:border-desaturated-dark-cyan w-full lg:text-lg'
+            onChange={() => {
+              if (name === 'password' && resetAlert) {
+                resetAlert()
+              }
+            }}
           />
         )}
       </div>

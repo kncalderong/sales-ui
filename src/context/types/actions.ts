@@ -1,10 +1,10 @@
-export enum ActionKind {
-  TOGGLE_THEME = 'TOGGLE_THEME',
+export enum ReducerActionType {
+  TOGGLE_THEME,
+  SETUP_SELLER,
+  LOGOUT_SELLER,
 }
 
-export type GlobalStateActions = {
-  type: ActionKind.TOGGLE_THEME
-  payload: {
-    darkTheme: boolean
-  }
+export type ReducerAction = {
+  type: ReducerActionType
+  payload?: any
 }

@@ -2,24 +2,75 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import FormRow from './FormRow'
 import React, { useState, useRef } from 'react'
+import { v4 as uuidv4 } from 'uuid'
+import { getSeller } from '../../utils/getUser'
+import { useAppContext } from '../../context/appContext'
+
+const alertInitialState = {
+  alertOn: false,
+  alertMessage: '',
+}
 
 const LoginRegisterForm = ({ toggleModal }: { toggleModal: () => void }) => {
   const [isLogin, setIsLogin] = useState(true)
+  const [showAlert, setShowAlert] = useState(alertInitialState)
+  const { setupUser } = useAppContext()
+
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
   const nameRef = useRef<HTMLInputElement>(null)
   const lastNameRef = useRef<HTMLInputElement>(null)
-  const streeRef = useRef<HTMLInputElement>(null)
+  const streetRef = useRef<HTMLInputElement>(null)
   const streetNumberRef = useRef<HTMLInputElement>(null)
   const neighborhoodRef = useRef<HTMLInputElement>(null)
   const cityRef = useRef<HTMLInputElement>(null)
   const phoneRef = useRef<HTMLInputElement>(null)
   const birthDateRef = useRef<HTMLInputElement>(null)
 
-  const loginOrRegister = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleLoginOrRegister = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    console.log(emailRef.current!.value)
+
+    const objectToSubmit = isLogin
+      ? {
+          email: emailRef.current!.value,
+          hashedPassword: passwordRef.current!.value,
+        }
+      : {
+          RUT: uuidv4(),
+          address: {
+            city: cityRef.current!.value,
+            neighborhood: neighborhoodRef.current!.value,
+            number: `${streetNumberRef.current!.value}`,
+            street: streetRef.current!.value,
+          },
+          birthDate: birthDateRef.current!.value,
+          email: emailRef.current!.value,
+          name: nameRef.current!.value,
+          lastName: lastNameRef.current!.value,
+          phone: `${phoneRef.current!.value}`,
+          hashedPassword: passwordRef.current!.value,
+        }
+    if (isLogin) {
+      const res = getSeller(objectToSubmit.email, objectToSubmit.hashedPassword)
+      console.log('res: ', res)
+      if (res.status === 500) {
+        setShowAlert({
+          alertOn: true,
+          alertMessage: res.msg || 'Invalid credentials',
+        })
+      }
+      if (res.status === 200) {
+        setupUser(res.seller!)
+      }
+    }
   }
+
+  const resetAlert = () => {
+    if (showAlert.alertOn) {
+      setShowAlert(alertInitialState)
+    }
+  }
+
   return (
     <aside
       className={` fixed w-full h-screen z-40 left-0 top-0 bg-gray-800 bg-opacity-25 flex justify-center items-center`}
@@ -33,7 +84,8 @@ const LoginRegisterForm = ({ toggleModal }: { toggleModal: () => void }) => {
         <div className='flex justify-end'>
           <FontAwesomeIcon icon={faXmark} onClick={toggleModal} />
         </div>
-        <form onSubmit={loginOrRegister}>
+        {showAlert.alertOn && <div>{showAlert.alertMessage}</div>}
+        <form onSubmit={handleLoginOrRegister}>
           {!isLogin && (
             <FormRow label='Name' type='text' name='name' ref={nameRef} />
           )}
@@ -56,16 +108,23 @@ const LoginRegisterForm = ({ toggleModal }: { toggleModal: () => void }) => {
               ref={birthDateRef}
             />
           )}
-          <FormRow label='Email' type='email' name='email' ref={emailRef} />
+          <FormRow
+            label='Email'
+            type='email'
+            name='email'
+            ref={emailRef}
+            resetAlert={resetAlert}
+          />
           <FormRow
             label='Password'
             type='password'
             name='password'
             ref={passwordRef}
+            resetAlert={resetAlert}
           />
           <p>Addres Information</p>
           {!isLogin && (
-            <FormRow label='Street' type='text' name='street' ref={streeRef} />
+            <FormRow label='Street' type='text' name='street' ref={streetRef} />
           )}
           {!isLogin && (
             <FormRow

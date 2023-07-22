@@ -10,17 +10,23 @@ const Sidebar = () => {
     setIsNavbarOpen(!isNavbarOpen)
   }
   return (
-    <nav className='w-full bg-primaryBlue px-6 py-3 shadow-md'>
+    <nav className='w-full bg-primaryBlue px-6 py-3 shadow-md lg:w-[5%] lg:px-0 lg:py-[4rem]'>
       <div>
         <FontAwesomeIcon
           icon={faBars}
-          className={`text-2xl cursor-pointer transition-all duration-500 text-white ${
+          className={`text-2xl cursor-pointer transition-all duration-500 text-white block lg:hidden ${
             isNavbarOpen ? 'rotate-90' : 'rotate-0'
           } `}
           onClick={toggleNavbar}
         />
       </div>
 
+      {/* DESKTOP navbar (Fixed) */}
+      <div className='hidden lg:block'>
+        <NavLinks toggleNavbar={toggleNavbar} />
+      </div>
+
+      {/* MOBILE navBar (Collapsible) */}
       <aside
         className={`${
           isNavbarOpen ? 'w-full' : 'w-0'
@@ -33,7 +39,7 @@ const Sidebar = () => {
       >
         <div
           className={`h-screen ${
-            isNavbarOpen ? 'w-[60%] p-6' : 'w-0 p-0'
+            isNavbarOpen ? 'w-[60%] sm:w-[40%] p-6' : 'w-0 p-0'
           } bg-white flex flex-col gap-4 overflow-hidden`}
         >
           <div className='w-full flex justify-end'>

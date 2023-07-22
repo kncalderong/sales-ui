@@ -8,6 +8,12 @@ const reducer = (state: GlobalStateType, action: ReducerAction) => {
       darkTheme: action.payload.darkTheme,
     }
   }
+  if (action.type === ReducerActionType.TOGGLE_GLOBAL_LOADING) {
+    return {
+      ...state,
+      isGlobalLoading: !state.isGlobalLoading,
+    }
+  }
   if (action.type === ReducerActionType.SETUP_SELLER) {
     return {
       ...state,

@@ -2,6 +2,6 @@ import { SellerType } from './../../types/dataBaseTypes'
 export interface GlobalStateType {
   //type of globalState
   darkTheme: boolean
-  isLoading: boolean
+  isGlobalLoading: boolean
   seller: SellerType | null
 }

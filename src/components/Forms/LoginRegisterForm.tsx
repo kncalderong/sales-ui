@@ -1,10 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import FormRow from './FormRow'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import { getSeller } from '../../utils/getUser'
+import { getSeller } from '../../utils/sellerSignup'
 import { useAppContext } from '../../context/appContext'
+import { useNavigate } from 'react-router-dom'
 
 const alertInitialState = {
   alertOn: false,
@@ -14,7 +15,9 @@ const alertInitialState = {
 const LoginRegisterForm = ({ toggleModal }: { toggleModal: () => void }) => {
   const [isLogin, setIsLogin] = useState(true)
   const [showAlert, setShowAlert] = useState(alertInitialState)
-  const { setupUser } = useAppContext()
+
+  const { setupUser, seller } = useAppContext()
+  const navigate = useNavigate()
 
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
@@ -27,9 +30,10 @@ const LoginRegisterForm = ({ toggleModal }: { toggleModal: () => void }) => {
   const phoneRef = useRef<HTMLInputElement>(null)
   const birthDateRef = useRef<HTMLInputElement>(null)
 
-  const handleLoginOrRegister = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleLoginOrRegister = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault()
-
     const objectToSubmit = isLogin
       ? {
           email: emailRef.current!.value,
@@ -53,14 +57,14 @@ const LoginRegisterForm = ({ toggleModal }: { toggleModal: () => void }) => {
     if (isLogin) {
       const res = getSeller(objectToSubmit.email, objectToSubmit.hashedPassword)
       console.log('res: ', res)
+      if (res.status === 200) {
+        setupUser(res.seller!)
+      }
       if (res.status === 500) {
         setShowAlert({
           alertOn: true,
           alertMessage: res.msg || 'Invalid credentials',
         })
-      }
-      if (res.status === 200) {
-        setupUser(res.seller!)
       }
     }
   }
@@ -71,6 +75,14 @@ const LoginRegisterForm = ({ toggleModal }: { toggleModal: () => void }) => {
     }
   }
 
+  useEffect(() => {
+    if (seller) {
+      setTimeout(() => {
+        navigate('/')
+      }, 200)
+    }
+  }, [seller, navigate])
+
   return (
     <aside
       className={` fixed w-full h-screen z-40 left-0 top-0 bg-gray-800 bg-opacity-25 flex justify-center items-center`}
@@ -80,12 +92,12 @@ const LoginRegisterForm = ({ toggleModal }: { toggleModal: () => void }) => {
         }
       }}
     >
-      <div className='bg-white p-6 opacity-100 z-50'>
-        <div className='flex justify-end'>
+      <div className='bg-white p-6 opacity-100 z-50 min-w-[50%] min-h-[25%] justify-center items-center flex flex-col'>
+        <div className='flex justify-end w-full'>
           <FontAwesomeIcon icon={faXmark} onClick={toggleModal} />
         </div>
         {showAlert.alertOn && <div>{showAlert.alertMessage}</div>}
-        <form onSubmit={handleLoginOrRegister}>
+        <form onSubmit={handleLoginOrRegister} className='w-full'>
           {!isLogin && (
             <FormRow label='Name' type='text' name='name' ref={nameRef} />
           )}

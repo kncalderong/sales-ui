@@ -1,14 +1,13 @@
-//import { useAppContext } from '../context/appContext';
-//import { Navigate } from 'react-router-dom';
+import { useAppContext } from '../context/appContext'
+import { Navigate } from 'react-router-dom'
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  //const { user, userLoading } = useAppContext();
+  const { seller } = useAppContext()
 
-  //if (userLoading) return <Loading />;
+  if (!seller) {
+    return <Navigate to='/landing' />
+  }
 
-  /* if (!user) {
-    return <Navigate to='/landing' />;
-  } */
   return children
 }
 

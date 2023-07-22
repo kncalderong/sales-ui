@@ -1,5 +1,6 @@
 import sellers from '../data/sellers'
 
+/* For LOGIN */
 const getSeller = (targetEmail: string, targetPassword: string) => {
   const seller = sellers.find((seller) => seller.email === targetEmail)
   if (!seller) {

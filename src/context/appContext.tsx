@@ -8,7 +8,7 @@ import { SellerType } from '../types/dataBaseTypes'
 
 const initialState: GlobalStateType = {
   darkTheme: false,
-  isLoading: false,
+  isGlobalLoading: false,
   seller: null,
 }
 

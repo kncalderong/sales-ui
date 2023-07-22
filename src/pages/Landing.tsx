@@ -3,11 +3,7 @@ import Header from '../components/Header'
 import LandingCard from '../components/LandingCard'
 import LoginRegisterForm from '../components/Forms/LoginRegisterForm'
 
-/* import { Navigate } from 'react-router-dom';
-import { useAppContext } from '../context/appContext'; */
-
 const Landing = () => {
-  //const { user } = useAppContext();
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const toggleModal = () => {
@@ -16,7 +12,6 @@ const Landing = () => {
 
   return (
     <main className={`min-h-screen w-full`}>
-      {/* {user && <Navigate to='/' />} */}
       {isModalOpen && <LoginRegisterForm toggleModal={toggleModal} />}
       <Header toggleModal={toggleModal} />
       <div

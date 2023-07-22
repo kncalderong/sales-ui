@@ -7,7 +7,7 @@ const NewSale = () => {
   console.log('seller OnDashboard', seller)
   console.log('sellers: ', sellers)
 
-  return <div>NewSale</div>
+  return <div className='w-full'>NewSale</div>
 }
 
 export default NewSale

@@ -3,7 +3,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import FormRow from './FormRow'
 import React, { useState, useRef, useEffect } from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import { getSeller } from '../../utils/sellerSignup'
+import { getSeller, setSeller } from '../../utils/sellerSignup'
 import { useAppContext } from '../../context/appContext'
 import { useNavigate } from 'react-router-dom'
 
@@ -34,27 +34,11 @@ const LoginRegisterForm = ({ toggleModal }: { toggleModal: () => void }) => {
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault()
-    const objectToSubmit = isLogin
-      ? {
-          email: emailRef.current!.value,
-          hashedPassword: passwordRef.current!.value,
-        }
-      : {
-          RUT: uuidv4(),
-          address: {
-            city: cityRef.current!.value,
-            neighborhood: neighborhoodRef.current!.value,
-            number: `${streetNumberRef.current!.value}`,
-            street: streetRef.current!.value,
-          },
-          birthDate: birthDateRef.current!.value,
-          email: emailRef.current!.value,
-          name: nameRef.current!.value,
-          lastName: lastNameRef.current!.value,
-          phone: `${phoneRef.current!.value}`,
-          hashedPassword: passwordRef.current!.value,
-        }
     if (isLogin) {
+      const objectToSubmit = {
+        email: emailRef.current!.value,
+        hashedPassword: passwordRef.current!.value,
+      }
       const res = getSeller(objectToSubmit.email, objectToSubmit.hashedPassword)
       console.log('res: ', res)
       if (res.status === 200) {
@@ -66,6 +50,25 @@ const LoginRegisterForm = ({ toggleModal }: { toggleModal: () => void }) => {
           alertMessage: res.msg || 'Invalid credentials',
         })
       }
+    }
+    if (!isLogin) {
+      const objectTOSubmit = {
+        RUT: uuidv4(),
+        address: {
+          city: cityRef.current!.value,
+          neighborhood: neighborhoodRef.current!.value,
+          number: `${streetNumberRef.current!.value}`,
+          street: streetRef.current!.value,
+        },
+        birthDate: birthDateRef.current!.value,
+        email: emailRef.current!.value,
+        name: nameRef.current!.value,
+        lastName: lastNameRef.current!.value,
+        phone: `${phoneRef.current!.value}`,
+        hashedPassword: passwordRef.current!.value,
+      }
+      const res = setSeller(objectTOSubmit)
+      setupUser(res.seller)
     }
   }
 

@@ -1,3 +1,4 @@
+import { SellerType } from './../types/dataBaseTypes'
 import sellers from '../data/sellers'
 
 /* For LOGIN */
@@ -23,4 +24,12 @@ const getSeller = (targetEmail: string, targetPassword: string) => {
   }
 }
 
-export { getSeller }
+/* For REGISTER */
+const setSeller = (objectToSubmit: SellerType) => {
+  sellers.push(objectToSubmit)
+  //to exlude hashed password
+  const { hashedPassword, ...sellerResponse } = objectToSubmit // eslint-disable-line @typescript-eslint/no-unused-vars
+  return { seller: sellerResponse }
+}
+
+export { getSeller, setSeller }

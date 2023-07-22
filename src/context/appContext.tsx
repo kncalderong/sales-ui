@@ -6,10 +6,12 @@ import { ContextValueType } from './types/contextValues'
 
 import { SellerType } from '../types/dataBaseTypes'
 
+const seller = localStorage.getItem('seller')
+
 const initialState: GlobalStateType = {
   darkTheme: false,
   isGlobalLoading: false,
-  seller: null,
+  seller: (seller && JSON.parse(seller)) || null,
 }
 
 const AppContext = createContext<ContextValueType | undefined>(undefined)
@@ -34,14 +36,14 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
         seller,
       },
     })
-    localStorage.setItem('sellerRUT', JSON.stringify(seller.RUT))
+    localStorage.setItem('seller', JSON.stringify(seller))
   }
 
   const logoutUser = () => {
     dispatch({
       type: ReducerActionType.LOGOUT_SELLER,
     })
-    localStorage.removeItem('sellerRUT')
+    localStorage.removeItem('seller')
   }
 
   return (

@@ -111,7 +111,11 @@ const LoginRegisterForm = ({ toggleModal }: { toggleModal: () => void }) => {
             className='text-primaryBlue text-[2rem] cursor-pointer'
           />
         </div>
-        {showAlert.alertOn && <div>{showAlert.alertMessage}</div>}
+        {showAlert.alertOn && (
+          <div className='my-4 text-red-950 bg-red-200 border-[1px] border-red-800 px-6 py-3 rounded-lg'>
+            {showAlert.alertMessage}
+          </div>
+        )}
         {isLoading ? (
           <Spinner />
         ) : (

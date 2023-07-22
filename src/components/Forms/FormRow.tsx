@@ -13,11 +13,8 @@ const FormRow = React.forwardRef(
     ref: React.ForwardedRef<HTMLInputElement>
   ) => {
     return (
-      <div className='w-full flex flex-col items-start justify-center gap-2'>
-        <label
-          htmlFor={name}
-          className='text-desaturated-dark-cyan font-bold lg:text-lg'
-        >
+      <div className='w-full flex flex-col items-start justify-center gap-2 mb-4'>
+        <label htmlFor={name} className='text-gray-700 font-bold lg:text-lg'>
           {label}
         </label>
         {type === 'email' ? (

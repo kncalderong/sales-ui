@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { getSeller, setSeller } from '../../utils/sellerSignup'
 import { useAppContext } from '../../context/appContext'
 import { useNavigate } from 'react-router-dom'
+import Spinner from '../Spinner'
 
 const alertInitialState = {
   alertOn: false,
@@ -15,6 +16,7 @@ const alertInitialState = {
 const LoginRegisterForm = ({ toggleModal }: { toggleModal: () => void }) => {
   const [isLogin, setIsLogin] = useState(true)
   const [showAlert, setShowAlert] = useState(alertInitialState)
+  const [isLoading, setIsLoading] = useState(false)
 
   const { setupUser, seller } = useAppContext()
   const navigate = useNavigate()
@@ -80,9 +82,11 @@ const LoginRegisterForm = ({ toggleModal }: { toggleModal: () => void }) => {
 
   useEffect(() => {
     if (seller) {
+      setIsLoading(true)
       setTimeout(() => {
+        setIsLoading(false)
         navigate('/')
-      }, 200)
+      }, 1000)
     }
   }, [seller, navigate])
 
@@ -95,85 +99,119 @@ const LoginRegisterForm = ({ toggleModal }: { toggleModal: () => void }) => {
         }
       }}
     >
-      <div className='bg-white p-6 opacity-100 z-50 min-w-[50%] min-h-[25%] justify-center items-center flex flex-col'>
+      <div
+        className={`bg-white p-6 opacity-100 z-50 min-w-[50%] min-h-[25%] justify-start items-center overflow-auto max-h-[80%] flex flex-col rounded-md shadow-xl lg:p-12 ${
+          isLogin && 'lg:min-w-[25%]'
+        }`}
+      >
         <div className='flex justify-end w-full'>
-          <FontAwesomeIcon icon={faXmark} onClick={toggleModal} />
+          <FontAwesomeIcon
+            icon={faXmark}
+            onClick={toggleModal}
+            className='text-primaryBlue text-[2rem] cursor-pointer'
+          />
         </div>
         {showAlert.alertOn && <div>{showAlert.alertMessage}</div>}
-        <form onSubmit={handleLoginOrRegister} className='w-full'>
-          {!isLogin && (
-            <FormRow label='Name' type='text' name='name' ref={nameRef} />
-          )}
-          {!isLogin && (
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <form onSubmit={handleLoginOrRegister} className='w-full mb-4'>
+            {!isLogin && (
+              <FormRow label='Name' type='text' name='name' ref={nameRef} />
+            )}
+            {!isLogin && (
+              <FormRow
+                label='Last Name'
+                type='text'
+                name='lastName'
+                ref={lastNameRef}
+              />
+            )}
+            {!isLogin && (
+              <FormRow
+                label='Phone'
+                type='number'
+                name='phone'
+                ref={phoneRef}
+              />
+            )}
+            {!isLogin && (
+              <FormRow
+                label='Birth Date'
+                type='date'
+                name='birthDate'
+                ref={birthDateRef}
+              />
+            )}
             <FormRow
-              label='Last Name'
-              type='text'
-              name='lastName'
-              ref={lastNameRef}
+              label='Email'
+              type='email'
+              name='email'
+              ref={emailRef}
+              resetAlert={resetAlert}
             />
-          )}
-          {!isLogin && (
-            <FormRow label='Phone' type='number' name='phone' ref={phoneRef} />
-          )}
-          {!isLogin && (
             <FormRow
-              label='Birth Date'
-              type='date'
-              name='birthDate'
-              ref={birthDateRef}
+              label='Password'
+              type='password'
+              name='password'
+              ref={passwordRef}
+              resetAlert={resetAlert}
             />
-          )}
-          <FormRow
-            label='Email'
-            type='email'
-            name='email'
-            ref={emailRef}
-            resetAlert={resetAlert}
-          />
-          <FormRow
-            label='Password'
-            type='password'
-            name='password'
-            ref={passwordRef}
-            resetAlert={resetAlert}
-          />
-          <p>Addres Information</p>
-          {!isLogin && (
-            <FormRow label='Street' type='text' name='street' ref={streetRef} />
-          )}
-          {!isLogin && (
-            <FormRow
-              label='Number'
-              type='number'
-              name='streetNumber'
-              ref={streetNumberRef}
-            />
-          )}
-          {!isLogin && (
-            <FormRow
-              label='Neighborhood'
-              type='text'
-              name='neighborhood'
-              ref={neighborhoodRef}
-            />
-          )}
-          {!isLogin && (
-            <FormRow label='City' type='text' name='city' ref={cityRef} />
-          )}
+            {!isLogin && (
+              <p className='font-extrabold text-primaryBlue mb-4 uppercase'>
+                Addres Information
+              </p>
+            )}
+            {!isLogin && (
+              <FormRow
+                label='Street'
+                type='text'
+                name='street'
+                ref={streetRef}
+              />
+            )}
+            {!isLogin && (
+              <FormRow
+                label='Number'
+                type='number'
+                name='streetNumber'
+                ref={streetNumberRef}
+              />
+            )}
+            {!isLogin && (
+              <FormRow
+                label='Neighborhood'
+                type='text'
+                name='neighborhood'
+                ref={neighborhoodRef}
+              />
+            )}
+            {!isLogin && (
+              <FormRow label='City' type='text' name='city' ref={cityRef} />
+            )}
 
-          <button type='submit'>Submit</button>
-        </form>
-        <div>
-          <p>
-            {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
-            <span
-              onClick={() => setIsLogin(!isLogin)}
-              className='cursor-pointer text-primaryBlue font-semibold'
+            <button
+              type='submit'
+              className='bg-primaryBlue cursor-pointer text-white rounded-md px-6 py-3 mt-4'
             >
-              {isLogin ? 'Register' : 'Login'}
-            </span>
-          </p>
-        </div>
+              Submit
+            </button>
+          </form>
+        )}
+
+        {!isLoading && (
+          <div>
+            <p className='lg:text-lg lg:mt-4 lg:font-extrabold text-gray-700'>
+              {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
+              <span
+                onClick={() => setIsLogin(!isLogin)}
+                className='cursor-pointer text-primaryBlue font-semibold lg:text-lg lg:mt-4 lg:font-extrabold'
+              >
+                {isLogin ? 'Register' : 'Login'}
+              </span>
+            </p>
+          </div>
+        )}
       </div>
     </aside>
   )

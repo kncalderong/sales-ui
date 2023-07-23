@@ -2,6 +2,8 @@ import { SaleType } from './types/dataBaseTypes'
 
 const sales: SaleType[] = [
   {
+    saleId: '01H5TY0S8NC1FKERSD84Y35HYK0CZ',
+    date: '23/7/2023, 17:34:46',
     client: {
       RUT: '01H5TY0SAETJG2K1A2C96FBAGX',
       name: 'Kaye',
@@ -61,6 +63,8 @@ const sales: SaleType[] = [
     total: 22195,
   },
   {
+    saleId: '01H5TY0S8NC1FKERSD84Y315468748SDFASDFCZ',
+    date: '22/7/2023, 13:34:46',
     client: {
       RUT: '01H5TY0SDQGE5WAPJFBWV5CXGY',
       name: 'Bride',

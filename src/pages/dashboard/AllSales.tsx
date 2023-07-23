@@ -3,12 +3,11 @@ import { getSales } from '../../utils/handleSales'
 import { SaleType } from '../../data/types/dataBaseTypes'
 import { useNavigate } from 'react-router-dom'
 
-
 const AllSales = () => {
-  const navigate =useNavigate()
-  
+  const navigate = useNavigate()
+
   const [salesData, setSalesData] = useState<SaleType[]>([])
-  const [selectedCountry, setSelectedCountry] = useState('')  
+  const [selectedCountry, setSelectedCountry] = useState('')
 
   useEffect(() => {
     const data = getSales(selectedCountry)
@@ -103,9 +102,12 @@ const AllSales = () => {
                     <span> {sale.branchOffice.currency}</span>
                   </div>
                 </div>
-                <div className='bg-primaryBlue text-white font-extrabold px-4 py-2 flex justify-center items-center cursor-pointer' onClick={()=>{
-  navigate(`sales/`)
-}}>
+                <div
+                  className='bg-primaryBlue text-white font-extrabold px-4 py-2 flex justify-center items-center cursor-pointer'
+                  onClick={() => {
+                    navigate(`/sales/${sale.saleId}`)
+                  }}
+                >
                   Ver Detalle
                 </div>
               </div>

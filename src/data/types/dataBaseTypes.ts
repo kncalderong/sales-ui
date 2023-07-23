@@ -50,6 +50,8 @@ export interface BranchOfficeType {
 }
 
 export interface SaleType {
+  saleId: string
+  date: string
   client: ClientType
   branchOffice: BranchOfficeType
   seller: SellerType

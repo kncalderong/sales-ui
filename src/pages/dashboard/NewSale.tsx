@@ -3,6 +3,7 @@ import { useAppContext } from '../../context/appContext'
 import { faPlus, faSearch, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { clientsFilter } from '../../utils/clientsFilter'
+import { v4 as uuidv4 } from 'uuid'
 
 import {
   ClientType,
@@ -141,6 +142,8 @@ const NewSale = () => {
     }
     if (seller) {
       const objectToSubmit: SaleType = {
+        saleId: uuidv4(),
+        date: new Date().toLocaleString(),
         client: documentInfo.client,
         branchOffice: documentInfo.branchOffice,
         seller: seller,

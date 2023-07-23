@@ -10,6 +10,7 @@ import { useState, useMemo } from 'react'
 import { clientsFilter } from '../../utils/clientsFilter'
 import { ClientType } from '../../types/dataBaseTypes'
 import CreateClientForm from '../../components/Forms/CreateClientForm'
+import branchOffices from '../../data/branchOffices'
 
 const documentInfoInitialState = {
   sellerRUT: '',
@@ -27,7 +28,7 @@ const documentInfoInitialState = {
     phone: '',
   },
   branchOffice: {
-    id: '',
+    id: NaN,
     country: '',
     currency: '',
   },
@@ -124,11 +125,23 @@ const NewSale = () => {
               <h3 className='text-lg text-gray-600 font-semibold'>
                 Branch Office
               </h3>
-              <div className='flex grow bg-white h-8'></div>
+              <div
+                className='flex grow bg-white h-8 px-3 items-center'
+                onClick={() => {
+                  setModalInfo({
+                    isOpen: true,
+                    modalType: modalActions.FIND_BRANCHOFFICE,
+                  })
+                }}
+              >
+                {documentInfo.branchOffice.country}
+              </div>
             </div>
             <div className='flex flex-col gap-2'>
               <h3 className='text-lg text-gray-600 font-semibold'>Currency</h3>
-              <div className='flex grow bg-white h-8'></div>
+              <div className='flex grow bg-white h-8 px-3 items-center'>
+                {documentInfo.branchOffice.currency}
+              </div>
             </div>
           </div>
         </div>
@@ -197,6 +210,8 @@ const NewSale = () => {
           Save
         </div>
       </div>
+
+      {/* Modal section */}
       {modalInfo.isOpen && (
         <aside
           className={`w-full fixed h-screen z-40 left-0 top-0 bg-gray-800 bg-opacity-25 flex justify-center items-center`}
@@ -304,6 +319,37 @@ const NewSale = () => {
                     })
                   }
                 />
+              </div>
+            )}
+
+            {/* Select BranchOffice */}
+            {modalInfo.modalType === modalActions.FIND_BRANCHOFFICE && (
+              <div>
+                <h2 className='text-primaryBlue font-extrabold mb-4 text-xl'>
+                  Select a branchOffice
+                </h2>
+                <div className='flex flex-col gap-3'>
+                  {branchOffices.map((branchOffice) => (
+                    <div
+                      key={branchOffice.id}
+                      className='flex justify-between'
+                      onClick={() => {
+                        setDocumentInfo({
+                          ...documentInfo,
+                          branchOffice,
+                        })
+                        setModalInfo(modalInitialState)
+                      }}
+                    >
+                      <p>{branchOffice.country}</p>
+                      <div className='w-[1.5rem] aspect-square border-[1px] rounded-md border-gray-500 p-1'>
+                        {documentInfo.branchOffice.id === branchOffice.id && (
+                          <div className='w-full bg-primaryBlue h-full rounded-sm'></div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>

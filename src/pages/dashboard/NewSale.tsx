@@ -11,11 +11,6 @@ import { clientsFilter } from '../../utils/clientsFilter'
 import { ClientType } from '../../types/dataBaseTypes'
 import CreateClientForm from '../../components/Forms/CreateClientForm'
 
-const modalInitialState = {
-  isOpen: false,
-  modalType: '',
-}
-
 const documentInfoInitialState = {
   sellerRUT: '',
   client: {
@@ -38,9 +33,25 @@ const documentInfoInitialState = {
   },
 }
 
+enum modalActions {
+  FIND_CLIENT,
+  CREATE_CLIENT,
+  FIND_BRANCHOFFICE,
+}
+
+type modalState = {
+  isOpen: boolean
+  modalType: modalActions | string
+}
+
+const modalInitialState = {
+  isOpen: false,
+  modalType: '',
+}
+
 const NewSale = () => {
   //const { seller } = useAppContext()
-  const [modalInfo, setModalInfo] = useState(modalInitialState)
+  const [modalInfo, setModalInfo] = useState<modalState>(modalInitialState)
   const [documentInfo, setDocumentInfo] = useState(documentInfoInitialState)
 
   const [localSearchClient, setLocalSearchClient] = useState('')
@@ -91,7 +102,10 @@ const NewSale = () => {
               <div
                 className='flex gap-4 '
                 onClick={() => {
-                  setModalInfo({ isOpen: true, modalType: 'addClient' })
+                  setModalInfo({
+                    isOpen: true,
+                    modalType: modalActions.FIND_CLIENT,
+                  })
                 }}
               >
                 <div className='flex grow bg-white h-8 gap-2 justify-start items-center px-4'>
@@ -197,11 +211,14 @@ const NewSale = () => {
           >
             <div className='flex justify-between w-full mb-4'>
               <div>
-                {modalInfo.modalType === 'addClient' && (
+                {modalInfo.modalType === modalActions.FIND_CLIENT && (
                   <div
                     className='py-2 px-4 bg-primaryBlue w-[150px] flex justify-center items-center text-white rounded-md'
                     onClick={() => {
-                      setModalInfo({ isOpen: true, modalType: 'createClient' })
+                      setModalInfo({
+                        isOpen: true,
+                        modalType: modalActions.CREATE_CLIENT,
+                      })
                     }}
                   >
                     Add new Client
@@ -218,7 +235,7 @@ const NewSale = () => {
             </div>
 
             {/* Search Existing Client */}
-            {modalInfo.modalType === 'addClient' && (
+            {modalInfo.modalType === modalActions.FIND_CLIENT && (
               <div>
                 <div className='flex w-full gap-2'>
                   <input
@@ -274,7 +291,7 @@ const NewSale = () => {
             )}
 
             {/* Create New Client */}
-            {modalInfo.modalType === 'createClient' && (
+            {modalInfo.modalType === modalActions.CREATE_CLIENT && (
               <div>
                 <h2 className='text-primaryBlue font-extrabold mb-4 text-xl'>
                   Register new client
@@ -282,7 +299,7 @@ const NewSale = () => {
                 <CreateClientForm
                   handleCloseForm={() =>
                     setModalInfo({
-                      modalType: 'addClient',
+                      modalType: modalActions.FIND_CLIENT,
                       isOpen: true,
                     })
                   }

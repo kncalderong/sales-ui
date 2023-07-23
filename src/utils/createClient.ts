@@ -1,5 +1,5 @@
 import clients from '../data/clients'
-import { ClientType } from '../types/dataBaseTypes'
+import { ClientType } from '../data/types/dataBaseTypes'
 
 const createClient = (client: ClientType) => {
   if (client) {

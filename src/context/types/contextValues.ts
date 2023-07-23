@@ -1,4 +1,4 @@
-import { SellerType } from '../../types/dataBaseTypes'
+import { SellerType } from '../../data/types/dataBaseTypes'
 import { GlobalStateType } from './globalState'
 
 export interface ContextValueType extends GlobalStateType {

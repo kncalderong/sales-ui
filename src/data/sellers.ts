@@ -1,4 +1,4 @@
-import { SellerType } from '../types/dataBaseTypes'
+import { SellerType } from './types/dataBaseTypes'
 
 const sellers: SellerType[] = [
   {

@@ -1,4 +1,4 @@
-import { SellerType } from './../types/dataBaseTypes'
+import { SellerType } from '../data/types/dataBaseTypes'
 import sellers from '../data/sellers'
 
 /* For LOGIN */

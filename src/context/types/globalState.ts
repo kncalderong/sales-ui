@@ -1,4 +1,4 @@
-import { SellerType } from './../../types/dataBaseTypes'
+import { SellerType } from '../../data/types/dataBaseTypes'
 export interface GlobalStateType {
   //type of globalState
   darkTheme: boolean

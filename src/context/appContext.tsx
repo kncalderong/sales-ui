@@ -4,7 +4,7 @@ import { ReducerActionType } from './types/actions'
 import { GlobalStateType } from './types/globalState'
 import { ContextValueType } from './types/contextValues'
 
-import { SellerType } from '../types/dataBaseTypes'
+import { SellerType } from '../data/types/dataBaseTypes'
 
 const seller = localStorage.getItem('seller')
 

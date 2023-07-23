@@ -163,11 +163,11 @@ const NewSale = () => {
   }, [detailsInfo])
 
   return (
-    <section className='w-full bg-slate-100 flex justify-center items-start pt-[20%] lg:pt-[6rem]'>
-      <div className='w-full max-w-[80%] lg:max-w-[880px] 2xl:max-w-[1280px]'>
+    <section className='w-full bg-slate-100 flex justify-center items-start pt-[20%] lg:py-[5.5rem]'>
+      <div className='w-full max-w-[80%] lg:max-w-[880px] 2xl:max-w-[1024px]'>
         {/* Title */}
         <div className='w-full flex items-center gap-6 mb-6 lg:mb-12'>
-          <div className='flex justify-center items-center w-[3rem]'>
+          <div className='flex justify-center items-center w-[3rem] lg:w-[5rem]'>
             <img
               src='/boxCarried.png'
               alt='boxCarriedIcon'
@@ -184,14 +184,14 @@ const NewSale = () => {
 
         {/* Document Section */}
         <div className='flex flex-col w-full mb-6 lg:mb-12'>
-          <h2 className='text-xl text-gray-800 border-b-[1px] border-gray-800 font-bold mb-4 py-2 lg:text-3xl'>
+          <h2 className='text-xl text-gray-800 border-b-[1px] border-gray-400 font-bold mb-4 py-2 lg:text-3xl'>
             Document
           </h2>
           <div className='flex flex-col gap-4 lg:flex-row'>
             <div className='flex flex-col gap-2 lg:basis-[40%]'>
-              <h3 className='text-lg text-gray-600 font-semibold'>Client</h3>
+              <h3 className='text-lg text-gray-400 font-semibold'>Client</h3>
               <div
-                className='flex gap-4 cursor-pointer'
+                className='flex gap-4 cursor-pointer '
                 onClick={() => {
                   setModalInfo({
                     isOpen: true,
@@ -199,11 +199,11 @@ const NewSale = () => {
                   })
                 }}
               >
-                <div className='flex grow bg-white h-8 gap-2 justify-start items-center px-4'>
+                <div className='flex grow bg-white h-8 gap-2 justify-start items-center px-4 lg:h-12'>
                   <span>{documentInfo.client.name}</span>
                   <span>{documentInfo.client.lastName}</span>
                 </div>
-                <div className='w-8 p-2 aspect-square bg-primaryBlue flex justify-center items-center'>
+                <div className='w-8 p-2 aspect-square bg-primaryBlue flex justify-center items-center lg:w-12'>
                   <FontAwesomeIcon
                     icon={faPlus}
                     className='text-white text-[1rem]'
@@ -212,11 +212,11 @@ const NewSale = () => {
               </div>
             </div>
             <div className='flex flex-col gap-2  lg:basis-[40%]'>
-              <h3 className='text-lg text-gray-600 font-semibold'>
+              <h3 className='text-lg text-gray-400 font-semibold'>
                 Branch Office
               </h3>
               <div
-                className='flex grow bg-white h-8 px-3 items-center cursor-pointer'
+                className='flex grow bg-white h-8 px-3 items-center cursor-pointer lg:h-12'
                 onClick={() => {
                   setModalInfo({
                     isOpen: true,
@@ -228,8 +228,8 @@ const NewSale = () => {
               </div>
             </div>
             <div className='flex flex-col gap-2 lg:grow'>
-              <h3 className='text-lg text-gray-600 font-semibold'>Currency</h3>
-              <div className='flex grow bg-white h-8 px-3 items-center'>
+              <h3 className='text-lg text-gray-400 font-semibold'>Currency</h3>
+              <div className='flex grow bg-white h-8 px-3 items-center lg:h-12'>
                 {documentInfo.branchOffice.currency}
               </div>
             </div>
@@ -237,16 +237,24 @@ const NewSale = () => {
         </div>
 
         {/* Details section */}
-        <div className='flex flex-col w-full  border-b-[1px] border-gray-800 mb-4 py-4 lg:mb-10'>
-          <h2 className='text-xl text-gray-800 border-b-[1px] border-gray-800 font-bold mb-4 py-2 lg:text-3xl'>
+        <div className='flex flex-col w-full  border-b-[1px] border-gray-400 mb-4 py-4 lg:mb-10'>
+          <h2 className='text-xl text-gray-800 border-b-[1px] border-gray-400 font-bold mb-4 py-2 lg:text-3xl'>
             Details
           </h2>
           <div className='flex flex-col w-full'>
-            <div className='hidden sm:flex'>
-              <h3 className='text-lg text-gray-600 font-semibold'>Name</h3>
-              <h3 className='text-lg text-gray-600 font-semibold'>Quantity</h3>
-              <h3 className='text-lg text-gray-600 font-semibold'>Price</h3>
-              <h3 className='text-lg text-gray-600 font-semibold'>Subtotal</h3>
+            <div className='hidden lg:flex lg:gap-4'>
+              <h3 className='text-lg text-gray-400 font-semibold basis-[50%]'>
+                Name
+              </h3>
+              <h3 className='text-lg text-gray-400 font-semibold basis-[15%]'>
+                Quantity
+              </h3>
+              <h3 className='text-lg text-gray-400 font-semibold basis-[15%]'>
+                Price
+              </h3>
+              <h3 className='text-lg text-gray-400 font-semibold basis-[15%]'>
+                Subtotal
+              </h3>
             </div>
             {/* this would be a field */}
             {detailsInfo.map((productAdded) => {
@@ -272,9 +280,11 @@ const NewSale = () => {
             />
             {/*  */}
 
-            <div className='flex gap-4 mb-4 w-full justify-end'>
-              <h3 className='text-lg text-gray-600 font-semibold'>Total</h3>
-              <div className='flex w-[40%] bg-white h-8'>{saleTotal}</div>
+            <div className='flex gap-4 mb-4 w-full justify-end items-center'>
+              <h3 className='text-lg text-gray-400 font-semibold'>Total</h3>
+              <div className='flex w-[40%] bg-white h-8 items-center px-4 lg:w-[15%] lg:mr-[calc(15%+1rem)] lg:h-12'>
+                {saleTotal === 0 ? '' : saleTotal}
+              </div>
             </div>
           </div>
         </div>
@@ -283,11 +293,13 @@ const NewSale = () => {
             {validationAlert.alertMessage}
           </div>
         )}
-        <div
-          className='py-4 px-8 bg-primaryBlue w-[40%] flex justify-center items-center text-white'
-          onClick={handleSubmit}
-        >
-          Save
+        <div className='w-full flex lg:justify-end'>
+          <div
+            className='py-4 px-8 bg-primaryBlue w-[40%] flex justify-center items-center text-white cursor-pointer lg:w-[180px]'
+            onClick={handleSubmit}
+          >
+            Save
+          </div>
         </div>
       </div>
 
@@ -308,7 +320,7 @@ const NewSale = () => {
               <div>
                 {modalInfo.modalType === ModalActions.FIND_CLIENT && (
                   <div
-                    className='py-2 px-4 bg-primaryBlue w-[150px] flex justify-center items-center text-white rounded-md'
+                    className='py-2 px-4 bg-primaryBlue w-[150px] flex justify-center items-center text-white rounded-md cursor-pointer'
                     onClick={() => {
                       setModalInfo({
                         isOpen: true,
@@ -343,7 +355,7 @@ const NewSale = () => {
                   <div className='flex justify-center items-center'>
                     <FontAwesomeIcon
                       icon={faSearch}
-                      className='text-gray-600 text-[1rem] cursor-pointer'
+                      className='text-gray-400 text-[1rem] cursor-pointer'
                     />
                   </div>
                 </div>
@@ -377,7 +389,7 @@ const NewSale = () => {
                     })}
                   {localSearchClient.length > 0 &&
                     availableClients.length < 1 && (
-                      <div className='my-4 text-gray-600'>
+                      <div className='my-4 text-gray-400'>
                         There are no clients with that name
                       </div>
                     )}
@@ -387,7 +399,7 @@ const NewSale = () => {
 
             {/* Create New Client */}
             {modalInfo.modalType === ModalActions.CREATE_CLIENT && (
-              <div>
+              <div className='w-full'>
                 <h2 className='text-primaryBlue font-extrabold mb-4 text-xl'>
                   Register new client
                 </h2>
@@ -404,11 +416,11 @@ const NewSale = () => {
 
             {/* Select BranchOffice */}
             {modalInfo.modalType === ModalActions.FIND_BRANCHOFFICE && (
-              <div className='w-full '>
+              <div className='w-full lg:w-[80%]'>
                 <h2 className='text-primaryBlue font-extrabold mb-4 text-xl lg:mb-6'>
                   Select a branchOffice
                 </h2>
-                <div className='flex flex-col gap-3 lg:w-[80%]'>
+                <div className='flex flex-col gap-3'>
                   {branchOffices.map((branchOffice) => (
                     <div
                       key={branchOffice.id}
@@ -438,11 +450,11 @@ const NewSale = () => {
             {/* Select Product */}
             {modalInfo.modalType === ModalActions.FIND_PRODUCT &&
               (documentInfo.branchOffice.country.length > 0 ? (
-                <div>
-                  <div className='flex w-full gap-2'>
+                <div className='w-full'>
+                  <div className='flex w-full gap-2 justify-between'>
                     <input
                       type='search'
-                      className='p-4'
+                      className='p-4 grow'
                       placeholder='Search product by name'
                       onChange={optimizedDebounceProducts}
                       value={localSearchProduct}
@@ -450,7 +462,7 @@ const NewSale = () => {
                     <div className='flex justify-center items-center'>
                       <FontAwesomeIcon
                         icon={faSearch}
-                        className='text-gray-600 text-[1rem] cursor-pointer'
+                        className='text-gray-400 text-[1rem] cursor-pointer'
                       />
                     </div>
                   </div>
@@ -461,7 +473,7 @@ const NewSale = () => {
                         return (
                           <div
                             key={product.id}
-                            className='flex justify-between items-center p-2 gap-3'
+                            className='flex justify-between items-center p-2 gap-3 cursor-pointer'
                             onClick={() => {
                               if (product.stock > 0) {
                                 setProductToAdd((prevState) => {
@@ -490,7 +502,7 @@ const NewSale = () => {
                       })}
                     {localSearchProduct.length > 0 &&
                       availableProducts.length < 1 && (
-                        <div className='my-4 text-gray-600'>
+                        <div className='my-4 text-gray-400'>
                           There are no products with that name
                         </div>
                       )}

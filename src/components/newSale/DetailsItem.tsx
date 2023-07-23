@@ -26,94 +26,128 @@ const DetailsItem = ({
   restartProductSearch,
 }: DetailsItem) => {
   return (
-    <div className='flex flex-col w-full mb-6 p-4 bg-slate-200 rounded-md gap-4'>
-      {!isAdding && (
-        <div className='flex justify-end items-center'>
-          <div
-            className='w-8 p-2 aspect-square bg-primaryBlue flex justify-center items-center'
-            onClick={() => {
-              setDetailsInfo((prevState) => {
-                const itemToErase = prevState.findIndex(
-                  (item) => item.product.id === productToAdd.product.id
-                )
-                return prevState.splice(itemToErase, 1)
-              })
-            }}
-          >
-            <FontAwesomeIcon
-              icon={faClose}
-              className='text-white text-[1rem]'
-            />
+    <div className='flex flex-col w-full mb-6 p-4 bg-slate-200 rounded-md gap-4 lg:bg-slate-100 lg:px-0'>
+      <div className='relative flex flex-col lg:flex-row lg:gap-4 lg:p-0 '>
+        {!isAdding && (
+          <div className='flex justify-end items-center lg:hidden'>
+            <div
+              className='w-8 p-2 aspect-square bg-primaryBlue flex justify-center items-center'
+              onClick={() => {
+                setDetailsInfo((prevState) => {
+                  const itemToErase = prevState.findIndex(
+                    (item) => item.product.id === productToAdd.product.id
+                  )
+                  return prevState.splice(itemToErase, 1)
+                })
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faClose}
+                className='text-white text-[1rem]'
+              />
+            </div>
           </div>
-        </div>
-      )}
-      <div
-        className='flex flex-col gap-2'
-        onClick={() => {
-          if (isAdding) {
-            modalHandle({
-              isOpen: true,
-              modalType: ModalActions.FIND_PRODUCT,
-            })
-          }
-        }}
-      >
-        <h3 className='text-lg text-gray-600 font-semibold'>Name</h3>
-        <div className='flex grow bg-white h-8'>
-          {productToAdd.product.name}
-        </div>
-      </div>
-      <div className='flex flex-col gap-2'>
-        <h3 className='text-lg text-gray-600 font-semibold'>Quantity</h3>
-        <input
-          className='newSaleProductToAddQuantity flex grow bg-white h-8'
-          type='number'
-          min={Number.isNaN(productToAdd.quantity) ? 0 : 1}
-          max={productToAdd.product.stock || 0}
-          value={
-            Number.isNaN(productToAdd.quantity) ? '' : productToAdd.quantity
-          }
-          onChange={(e) => {
-            if (isAdding && productToAdd.product.name.length > 0) {
-              setProductToAdd((prevState) => {
-                return {
-                  ...prevState,
-                  subtotal:
-                    +e.target!.value > productToAdd.product.stock
-                      ? productToAdd.product.stock * productToAdd.product.price
-                      : +e.target!.value * productToAdd.product.price,
-                  quantity:
-                    +e.target!.value > productToAdd.product.stock
-                      ? productToAdd.product.stock
-                      : +e.target!.value,
-                }
+        )}
+        <div
+          className='flex flex-col gap-2 lg:basis-[50%]'
+          onClick={() => {
+            if (isAdding) {
+              modalHandle({
+                isOpen: true,
+                modalType: ModalActions.FIND_PRODUCT,
               })
             }
           }}
-        />
-      </div>
-      <div className='flex flex-col gap-2'>
-        <h3 className='text-lg text-gray-600 font-semibold'>Price</h3>
-        <div className='flex grow bg-white h-8'>
-          {productToAdd.product.price || null}
+        >
+          <h3 className='text-lg text-gray-400 font-semibold block lg:hidden'>
+            Name
+          </h3>
+          <div className='flex grow bg-white h-8 cursor-pointer items-center px-4 lg:h-12'>
+            {productToAdd.product.name}
+          </div>
         </div>
-      </div>
-      <div className='flex flex-col gap-2'>
-        <h3 className='text-lg text-gray-600 font-semibold'>Subtotal</h3>
-        <div className='flex grow bg-white h-8'>
-          {productToAdd.subtotal || null}
+        <div className='flex flex-col gap-2 lg:basis-[15%]'>
+          <h3 className='text-lg text-gray-400 font-semibold block lg:hidden'>
+            Quantity
+          </h3>
+          <input
+            className='newSaleProductToAddQuantity flex grow bg-white h-8 cursor-pointer items-center px-4 lg:h-12'
+            type='number'
+            min={Number.isNaN(productToAdd.quantity) ? 0 : 1}
+            max={productToAdd.product.stock || 0}
+            value={
+              Number.isNaN(productToAdd.quantity) ? '' : productToAdd.quantity
+            }
+            onChange={(e) => {
+              if (isAdding && productToAdd.product.name.length > 0) {
+                setProductToAdd((prevState) => {
+                  return {
+                    ...prevState,
+                    subtotal:
+                      +e.target!.value > productToAdd.product.stock
+                        ? productToAdd.product.stock *
+                          productToAdd.product.price
+                        : +e.target!.value * productToAdd.product.price,
+                    quantity:
+                      +e.target!.value > productToAdd.product.stock
+                        ? productToAdd.product.stock
+                        : +e.target!.value,
+                  }
+                })
+              }
+            }}
+          />
         </div>
+        <div className='flex flex-col gap-2 lg:basis-[15%]'>
+          <h3 className='text-lg text-gray-400 font-semibold block lg:hidden'>
+            Price
+          </h3>
+          <div className='flex grow bg-white h-8 items-center px-4 lg:h-12'>
+            {productToAdd.product.price || null}
+          </div>
+        </div>
+        <div className='flex flex-col gap-2 lg:basis-[15%]'>
+          <h3 className='text-lg text-gray-400 font-semibold block lg:hidden'>
+            Subtotal
+          </h3>
+          <div className='flex grow bg-white h-8 items-center px-4 lg:h-12'>
+            {productToAdd.subtotal || null}
+          </div>
+        </div>
+        {!isAdding && (
+          <div className='justify-end items-center hidden lg:flex lg:absolute right-[-3rem] cursor-pointer'>
+            <div
+              className='w-8 p-2 aspect-square bg-primaryBlue flex justify-center items-center'
+              onClick={() => {
+                setDetailsInfo((prevState) => {
+                  const itemToErase = prevState.findIndex(
+                    (item) => item.product.id === productToAdd.product.id
+                  )
+                  return prevState.splice(itemToErase, 1)
+                })
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faClose}
+                className='text-white text-[1rem]'
+              />
+            </div>
+          </div>
+        )}
       </div>
+
       {isAdding && (
-        <div className='flex w-full justify-end'>
+        <div className='flex w-full justify-end lg:justify-start'>
           <div
-            className='py-2 px-4 bg-primaryBlue w-[40%] flex justify-center items-center text-white mt-4 '
+            className='py-2 px-4 bg-primaryBlue w-[40%] flex justify-center items-center text-white mt-4  cursor-pointer lg:w-[120px] lg:py-3'
             onClick={() => {
-              setDetailsInfo((prevState: ProductToAddStateType[]) => {
-                return [...prevState, productToAdd]
-              })
-              setProductToAdd(productToAddInitialState)
-              restartProductSearch()
+              if (productToAdd.product.name.length > 0) {
+                setDetailsInfo((prevState: ProductToAddStateType[]) => {
+                  return [...prevState, productToAdd]
+                })
+                setProductToAdd(productToAddInitialState)
+                restartProductSearch()
+              }
             }}
           >
             Add

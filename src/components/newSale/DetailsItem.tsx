@@ -68,11 +68,13 @@ const DetailsItem = ({
         <input
           className='newSaleProductToAddQuantity flex grow bg-white h-8'
           type='number'
-          min={1}
+          min={Number.isNaN(productToAdd.quantity) ? 0 : 1}
           max={productToAdd.product.stock || 0}
-          value={productToAdd.quantity || 0}
+          value={
+            Number.isNaN(productToAdd.quantity) ? '' : productToAdd.quantity
+          }
           onChange={(e) => {
-            if (isAdding) {
+            if (isAdding && productToAdd.product.name.length > 0) {
               setProductToAdd((prevState) => {
                 return {
                   ...prevState,

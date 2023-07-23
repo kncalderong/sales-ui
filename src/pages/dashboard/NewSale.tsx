@@ -364,6 +364,7 @@ const NewSale = () => {
                           branchOffice,
                         })
                         setProductToAdd(productToAddInitialState)
+                        setDetailsInfo([])
                         setModalInfo(modalInitialState)
                       }}
                     >

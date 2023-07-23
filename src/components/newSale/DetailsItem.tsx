@@ -29,7 +29,17 @@ const DetailsItem = ({
     <div className='flex flex-col w-full mb-6 p-4 bg-slate-200 rounded-md gap-4'>
       {!isAdding && (
         <div className='flex justify-end items-center'>
-          <div className='w-8 p-2 aspect-square bg-primaryBlue flex justify-center items-center'>
+          <div
+            className='w-8 p-2 aspect-square bg-primaryBlue flex justify-center items-center'
+            onClick={() => {
+              setDetailsInfo((prevState) => {
+                const itemToErase = prevState.findIndex(
+                  (item) => item.product.id === productToAdd.product.id
+                )
+                return prevState.splice(itemToErase, 1)
+              })
+            }}
+          >
             <FontAwesomeIcon
               icon={faClose}
               className='text-white text-[1rem]'

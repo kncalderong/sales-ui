@@ -18,7 +18,7 @@ import {
   ModalStateType,
   ProductToAddStateType,
 } from '../types/newSalePage'
-import { createSale } from '../../utils/createSale'
+import { createSale } from '../../utils/handleSales'
 
 const documentInfoInitialState = {
   sellerRUT: '',

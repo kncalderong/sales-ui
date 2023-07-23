@@ -6,7 +6,7 @@ import {
   faSearch,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons'
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import { clientsFilter } from '../../utils/clientsFilter'
 import { ClientType } from '../../types/dataBaseTypes'
 
@@ -43,7 +43,6 @@ const NewSale = () => {
   const [documentInfo, setDocumentInfo] = useState(documentInfoInitialState)
 
   const [localSearchClient, setLocalSearchClient] = useState('')
-  const [searchClient, setSearchClient] = useState('')
   const [availableClients, setAvailableClients] = useState<ClientType[]>([])
 
   const debounce = () => {
@@ -52,14 +51,10 @@ const NewSale = () => {
       setLocalSearchClient(e.target.value)
       clearTimeout(timeoutID)
       timeoutID = setTimeout(() => {
-        setSearchClient(e.target.value)
-      }, 500)
+        setAvailableClients(clientsFilter(e.target.value))
+      }, 200)
     }
   }
-
-  useEffect(() => {
-    setAvailableClients(clientsFilter(searchClient))
-  }, [searchClient])
 
   const optimizedDebounce = useMemo(() => debounce(), [])
 
@@ -226,27 +221,39 @@ const NewSale = () => {
                   </div>
                 </div>
                 <div className='w-full'>
-                  {availableClients.map((client) => {
-                    return (
-                      <div
-                        key={client.RUT}
-                        className='flex justify-between items-center p-2 gap-3'
-                        onClick={() => {
-                          setDocumentInfo({
-                            ...documentInfo,
-                            client,
-                          })
-                          setModalInfo(modalInitialState)
-                        }}
-                      >
-                        <p className='flex gap-2'>
-                          <span> {client.name}</span>
-                          <span> {client.lastName}</span>
-                        </p>
-                        <div className='w-[1.5rem] aspect-square border-[1px] rounded-md border-gray-500'></div>
+                  {localSearchClient.length > 0 &&
+                    availableClients.length > 0 &&
+                    availableClients.map((client) => {
+                      return (
+                        <div
+                          key={client.RUT}
+                          className='flex justify-between items-center p-2 gap-3'
+                          onClick={() => {
+                            setDocumentInfo({
+                              ...documentInfo,
+                              client,
+                            })
+                            setModalInfo(modalInitialState)
+                          }}
+                        >
+                          <p className='flex gap-2'>
+                            <span> {client.name}</span>
+                            <span> {client.lastName}</span>
+                          </p>
+                          <div className='w-[1.5rem] aspect-square border-[1px] rounded-md border-gray-500 p-1'>
+                            {documentInfo.client.RUT === client.RUT && (
+                              <div className='w-full bg-primaryBlue h-full rounded-sm'></div>
+                            )}
+                          </div>
+                        </div>
+                      )
+                    })}
+                  {localSearchClient.length > 0 &&
+                    availableClients.length < 1 && (
+                      <div className='my-4 text-gray-600'>
+                        There are no clients with that name
                       </div>
-                    )
-                  })}
+                    )}
                 </div>
               </div>
             )}

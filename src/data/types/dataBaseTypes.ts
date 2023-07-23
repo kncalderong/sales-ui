@@ -35,8 +35,8 @@ export interface ProductType {
 
 export interface BranchOfficeType {
   id: number
-  country:
-    | 'Chile'
+  country: string
+  /* | 'Chile'
     | 'Argentina'
     | 'Colombia'
     | 'Ecuador'
@@ -45,22 +45,24 @@ export interface BranchOfficeType {
     | 'Peru'
     | 'Panama'
     | 'Mexico'
-    | 'Uruguay'
+    | 'Uruguay' */
   currency: string
 }
 
 export interface SaleType {
-  client: {
-    clientRUT: string
-    clientName: string
-  }
+  client: ClientType
   branchOffice: BranchOfficeType
+  seller: SellerType
   details: {
+    product: {
+      id: number
+      name: string
+      price: number
+      stock: number
+      branchOfficeId: number
+    }
     quantity: number
-    productId: number
-    productName: string
-    unitPrice: number
-    subTotal: number
+    subtotal: number
   }[]
   total: number
 }

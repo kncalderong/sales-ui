@@ -1,10 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-//import { useAppContext } from '../../context/appContext'
-
+import { useAppContext } from '../../context/appContext'
 import { faPlus, faSearch, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { clientsFilter } from '../../utils/clientsFilter'
-import { ClientType, ProductType } from '../../data/types/dataBaseTypes'
+import {
+  ClientType,
+  ProductType,
+  SaleType,
+} from '../../data/types/dataBaseTypes'
 import CreateClientForm from '../../components/Forms/CreateClientForm'
 import branchOffices from '../../data/branchOffices'
 import DetailsItem from '../../components/newSale/DetailsItem'
@@ -54,12 +57,19 @@ export const productToAddInitialState = {
   subtotal: NaN,
 }
 
+/* const alertInitialState = {
+  isActive: false,
+  alertMessage: ''
+} */
+
 const NewSale = () => {
-  //const { seller } = useAppContext()
+  const { seller } = useAppContext()
   const [modalInfo, setModalInfo] = useState<ModalStateType>(modalInitialState)
   const [documentInfo, setDocumentInfo] = useState(documentInfoInitialState)
   const [detailsInfo, setDetailsInfo] = useState<ProductToAddStateType[]>([])
   const [productToAdd, setProductToAdd] = useState(productToAddInitialState)
+  //const [validationAlert, setValidationAlert] = useState(alertInitialState);
+  const [saleTotal, setSaleTotal] = useState(0)
 
   const [localSearchClient, setLocalSearchClient] = useState('')
   const [availableClients, setAvailableClients] = useState<ClientType[]>([])
@@ -107,12 +117,28 @@ const NewSale = () => {
   )
 
   const handleSubmit = () => {
-    console.log('objectToSubmit', documentInfo)
+    if (seller) {
+      const objectToSubmit: SaleType = {
+        client: documentInfo.client,
+        branchOffice: documentInfo.branchOffice,
+        seller: seller,
+        details: detailsInfo,
+        total: saleTotal,
+      }
+      console.log('objectToSubmit: ', objectToSubmit)
+    }
   }
 
   const restartProductSearch = () => {
     setLocalSearchProduct('')
   }
+
+  useEffect(() => {
+    const calcTotal = detailsInfo.reduce((acc, cur) => {
+      return cur.subtotal + acc
+    }, 0)
+    setSaleTotal(calcTotal)
+  }, [detailsInfo])
 
   return (
     <section className='w-full bg-slate-100 flex justify-center items-start pt-[20%]'>
@@ -224,7 +250,7 @@ const NewSale = () => {
 
             <div className='flex gap-4 mb-4 w-full justify-end'>
               <h3 className='text-lg text-gray-600 font-semibold'>Total</h3>
-              <div className='flex w-[40%] bg-white h-8'></div>
+              <div className='flex w-[40%] bg-white h-8'>{saleTotal}</div>
             </div>
           </div>
         </div>

@@ -9,6 +9,7 @@ import {
 import { useState, useMemo } from 'react'
 import { clientsFilter } from '../../utils/clientsFilter'
 import { ClientType } from '../../types/dataBaseTypes'
+import CreateClientForm from '../../components/Forms/CreateClientForm'
 
 const modalInitialState = {
   isOpen: false,
@@ -52,7 +53,7 @@ const NewSale = () => {
       clearTimeout(timeoutID)
       timeoutID = setTimeout(() => {
         setAvailableClients(clientsFilter(e.target.value))
-      }, 200)
+      }, 80)
     }
   }
 
@@ -194,7 +195,19 @@ const NewSale = () => {
           <div
             className={`bg-white p-6 opacity-100 z-50 min-w-[50%] min-h-[25%] justify-start items-center overflow-auto max-h-[80%] flex flex-col rounded-md shadow-xl lg:p-12`}
           >
-            <div className='flex justify-end w-full mb-4'>
+            <div className='flex justify-between w-full mb-4'>
+              <div>
+                {modalInfo.modalType === 'addClient' && (
+                  <div
+                    className='py-2 px-4 bg-primaryBlue w-[150px] flex justify-center items-center text-white rounded-md'
+                    onClick={() => {
+                      setModalInfo({ isOpen: true, modalType: 'createClient' })
+                    }}
+                  >
+                    Add new Client
+                  </div>
+                )}
+              </div>
               <FontAwesomeIcon
                 icon={faXmark}
                 onClick={() => {
@@ -203,6 +216,8 @@ const NewSale = () => {
                 className='text-primaryBlue text-[2rem] cursor-pointer'
               />
             </div>
+
+            {/* Search Existing Client */}
             {modalInfo.modalType === 'addClient' && (
               <div>
                 <div className='flex w-full gap-2'>
@@ -255,6 +270,23 @@ const NewSale = () => {
                       </div>
                     )}
                 </div>
+              </div>
+            )}
+
+            {/* Create New Client */}
+            {modalInfo.modalType === 'createClient' && (
+              <div>
+                <h2 className='text-primaryBlue font-extrabold mb-4 text-xl'>
+                  Register new client
+                </h2>
+                <CreateClientForm
+                  handleCloseForm={() =>
+                    setModalInfo({
+                      modalType: 'addClient',
+                      isOpen: true,
+                    })
+                  }
+                />
               </div>
             )}
           </div>

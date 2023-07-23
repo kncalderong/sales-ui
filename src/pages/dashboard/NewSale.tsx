@@ -163,10 +163,10 @@ const NewSale = () => {
   }, [detailsInfo])
 
   return (
-    <section className='w-full bg-slate-100 flex justify-center items-start pt-[20%]'>
-      <div className='w-full max-w-[80%]'>
+    <section className='w-full bg-slate-100 flex justify-center items-start pt-[20%] lg:pt-[6rem]'>
+      <div className='w-full max-w-[80%] lg:max-w-[880px] 2xl:max-w-[1280px]'>
         {/* Title */}
-        <div className='w-full flex items-center gap-6 mb-6'>
+        <div className='w-full flex items-center gap-6 mb-6 lg:mb-12'>
           <div className='flex justify-center items-center w-[3rem]'>
             <img
               src='/boxCarried.png'
@@ -175,21 +175,23 @@ const NewSale = () => {
             />
           </div>
           <div className='flex flex-col gap-4 w-full'>
-            <p className='text-gray-800 text-3xl font-extrabold'>New Sale</p>
+            <p className='text-gray-800 text-3xl font-extrabold lg:text-5xl'>
+              New Sale
+            </p>
             <div className='w-full h-[3px] rounded-full bg-slate-300'></div>
           </div>
         </div>
 
         {/* Document Section */}
-        <div className='flex flex-col w-full mb-6'>
-          <h2 className='text-xl text-gray-800 border-b-[1px] border-gray-800 font-bold mb-4 py-2'>
+        <div className='flex flex-col w-full mb-6 lg:mb-12'>
+          <h2 className='text-xl text-gray-800 border-b-[1px] border-gray-800 font-bold mb-4 py-2 lg:text-3xl'>
             Document
           </h2>
-          <div className='flex flex-col gap-4'>
-            <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-4 lg:flex-row'>
+            <div className='flex flex-col gap-2 lg:basis-[40%]'>
               <h3 className='text-lg text-gray-600 font-semibold'>Client</h3>
               <div
-                className='flex gap-4 '
+                className='flex gap-4 cursor-pointer'
                 onClick={() => {
                   setModalInfo({
                     isOpen: true,
@@ -209,12 +211,12 @@ const NewSale = () => {
                 </div>
               </div>
             </div>
-            <div className='flex flex-col gap-2'>
+            <div className='flex flex-col gap-2  lg:basis-[40%]'>
               <h3 className='text-lg text-gray-600 font-semibold'>
                 Branch Office
               </h3>
               <div
-                className='flex grow bg-white h-8 px-3 items-center'
+                className='flex grow bg-white h-8 px-3 items-center cursor-pointer'
                 onClick={() => {
                   setModalInfo({
                     isOpen: true,
@@ -225,7 +227,7 @@ const NewSale = () => {
                 {documentInfo.branchOffice.country}
               </div>
             </div>
-            <div className='flex flex-col gap-2'>
+            <div className='flex flex-col gap-2 lg:grow'>
               <h3 className='text-lg text-gray-600 font-semibold'>Currency</h3>
               <div className='flex grow bg-white h-8 px-3 items-center'>
                 {documentInfo.branchOffice.currency}
@@ -235,8 +237,8 @@ const NewSale = () => {
         </div>
 
         {/* Details section */}
-        <div className='flex flex-col w-full  border-b-[1px] border-gray-800 mb-4 py-4'>
-          <h2 className='text-xl text-gray-800 border-b-[1px] border-gray-800 font-bold mb-4 py-2'>
+        <div className='flex flex-col w-full  border-b-[1px] border-gray-800 mb-4 py-4 lg:mb-10'>
+          <h2 className='text-xl text-gray-800 border-b-[1px] border-gray-800 font-bold mb-4 py-2 lg:text-3xl'>
             Details
           </h2>
           <div className='flex flex-col w-full'>
@@ -329,11 +331,11 @@ const NewSale = () => {
 
             {/* Search Existing Client */}
             {modalInfo.modalType === ModalActions.FIND_CLIENT && (
-              <div>
+              <div className='w-full'>
                 <div className='flex w-full gap-2'>
                   <input
                     type='search'
-                    className='p-4'
+                    className='p-4 grow'
                     placeholder='Search by client name'
                     onChange={optimizedDebounceClients}
                     value={localSearchClient}
@@ -402,15 +404,15 @@ const NewSale = () => {
 
             {/* Select BranchOffice */}
             {modalInfo.modalType === ModalActions.FIND_BRANCHOFFICE && (
-              <div>
-                <h2 className='text-primaryBlue font-extrabold mb-4 text-xl'>
+              <div className='w-full '>
+                <h2 className='text-primaryBlue font-extrabold mb-4 text-xl lg:mb-6'>
                   Select a branchOffice
                 </h2>
-                <div className='flex flex-col gap-3'>
+                <div className='flex flex-col gap-3 lg:w-[80%]'>
                   {branchOffices.map((branchOffice) => (
                     <div
                       key={branchOffice.id}
-                      className='flex justify-between'
+                      className='flex justify-between cursor-pointer'
                       onClick={() => {
                         setDocumentInfo({
                           ...documentInfo,

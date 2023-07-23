@@ -3,6 +3,7 @@ import { useAppContext } from '../../context/appContext'
 import { faPlus, faSearch, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { clientsFilter } from '../../utils/clientsFilter'
+
 import {
   ClientType,
   ProductType,
@@ -17,6 +18,7 @@ import {
   ModalStateType,
   ProductToAddStateType,
 } from '../types/newSalePage'
+import { createSale } from '../../utils/createSale'
 
 const documentInfoInitialState = {
   sellerRUT: '',
@@ -57,10 +59,10 @@ export const productToAddInitialState = {
   subtotal: NaN,
 }
 
-/* const alertInitialState = {
+const alertInitialState = {
   isActive: false,
-  alertMessage: ''
-} */
+  alertMessage: '',
+}
 
 const NewSale = () => {
   const { seller } = useAppContext()
@@ -68,7 +70,7 @@ const NewSale = () => {
   const [documentInfo, setDocumentInfo] = useState(documentInfoInitialState)
   const [detailsInfo, setDetailsInfo] = useState<ProductToAddStateType[]>([])
   const [productToAdd, setProductToAdd] = useState(productToAddInitialState)
-  //const [validationAlert, setValidationAlert] = useState(alertInitialState);
+  const [validationAlert, setValidationAlert] = useState(alertInitialState)
   const [saleTotal, setSaleTotal] = useState(0)
 
   const [localSearchClient, setLocalSearchClient] = useState('')
@@ -117,6 +119,26 @@ const NewSale = () => {
   )
 
   const handleSubmit = () => {
+    if (documentInfo.client.RUT === '') {
+      setValidationAlert({
+        isActive: true,
+        alertMessage: 'Please include client information first',
+      })
+      setTimeout(() => {
+        setValidationAlert(alertInitialState)
+      }, 2500)
+      return
+    }
+    if (saleTotal === 0) {
+      setValidationAlert({
+        isActive: true,
+        alertMessage: 'Please register at least one product',
+      })
+      setTimeout(() => {
+        setValidationAlert(alertInitialState)
+      }, 2500)
+      return
+    }
     if (seller) {
       const objectToSubmit: SaleType = {
         client: documentInfo.client,
@@ -125,7 +147,7 @@ const NewSale = () => {
         details: detailsInfo,
         total: saleTotal,
       }
-      console.log('objectToSubmit: ', objectToSubmit)
+      createSale(objectToSubmit)
     }
   }
 
@@ -254,6 +276,11 @@ const NewSale = () => {
             </div>
           </div>
         </div>
+        {validationAlert.isActive && (
+          <div className='my-4 text-red-950 bg-red-200 border-[1px] border-red-800 px-6 py-3 rounded-lg'>
+            {validationAlert.alertMessage}
+          </div>
+        )}
         <div
           className='py-4 px-8 bg-primaryBlue w-[40%] flex justify-center items-center text-white'
           onClick={handleSubmit}

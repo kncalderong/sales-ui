@@ -1,16 +1,19 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 //import { useAppContext } from '../../context/appContext'
-import {
-  faClose,
-  faPlus,
-  faSearch,
-  faXmark,
-} from '@fortawesome/free-solid-svg-icons'
-import { useState, useMemo } from 'react'
+
+import { faPlus, faSearch, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { useState, useMemo, useCallback } from 'react'
 import { clientsFilter } from '../../utils/clientsFilter'
-import { ClientType } from '../../types/dataBaseTypes'
+import { ClientType, ProductType } from '../../data/types/dataBaseTypes'
 import CreateClientForm from '../../components/Forms/CreateClientForm'
 import branchOffices from '../../data/branchOffices'
+import DetailsItem from '../../components/newSale/DetailsItem'
+import { productsFilter } from '../../utils/productsFilter'
+import {
+  ModalActions,
+  ModalStateType,
+  ProductToAddStateType,
+} from '../types/newSalePage'
 
 const documentInfoInitialState = {
   sellerRUT: '',
@@ -34,46 +37,83 @@ const documentInfoInitialState = {
   },
 }
 
-enum modalActions {
-  FIND_CLIENT,
-  CREATE_CLIENT,
-  FIND_BRANCHOFFICE,
-}
-
-type modalState = {
-  isOpen: boolean
-  modalType: modalActions | string
-}
-
 const modalInitialState = {
   isOpen: false,
   modalType: '',
 }
 
+export const productToAddInitialState = {
+  product: {
+    id: NaN,
+    name: '',
+    price: NaN,
+    stock: NaN,
+    branchOfficeId: NaN,
+  },
+  quantity: NaN,
+  subtotal: NaN,
+}
+
 const NewSale = () => {
   //const { seller } = useAppContext()
-  const [modalInfo, setModalInfo] = useState<modalState>(modalInitialState)
+  const [modalInfo, setModalInfo] = useState<ModalStateType>(modalInitialState)
   const [documentInfo, setDocumentInfo] = useState(documentInfoInitialState)
+  const [detailsInfo, setDetailsInfo] = useState<ProductToAddStateType[]>([])
+  const [productToAdd, setProductToAdd] = useState(productToAddInitialState)
 
   const [localSearchClient, setLocalSearchClient] = useState('')
   const [availableClients, setAvailableClients] = useState<ClientType[]>([])
 
-  const debounce = () => {
-    let timeoutID: ReturnType<typeof setTimeout>
-    return (e: React.ChangeEvent<HTMLInputElement>) => {
-      setLocalSearchClient(e.target.value)
-      clearTimeout(timeoutID)
-      timeoutID = setTimeout(() => {
-        setAvailableClients(clientsFilter(e.target.value))
-      }, 80)
-    }
-  }
+  const [localSearchProduct, setLocalSearchProduct] = useState('')
+  const [availableProducts, setAvailableProducts] = useState<ProductType[]>([])
 
-  const optimizedDebounce = useMemo(() => debounce(), [])
+  const debounce = useCallback(
+    (option: ModalActions) => {
+      let timeoutID: ReturnType<typeof setTimeout>
+      return (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (option === ModalActions.FIND_CLIENT) {
+          setLocalSearchClient(e.target.value)
+        }
+        if (option === ModalActions.FIND_PRODUCT) {
+          setLocalSearchProduct(e.target.value)
+        }
+        clearTimeout(timeoutID)
+        timeoutID = setTimeout(() => {
+          if (option === ModalActions.FIND_CLIENT) {
+            setAvailableClients(clientsFilter(e.target.value))
+          }
+          if (option === ModalActions.FIND_PRODUCT) {
+            setAvailableProducts(
+              productsFilter(
+                e.target.value,
+                documentInfo.branchOffice.id,
+                detailsInfo
+              )
+            )
+          }
+        }, 80)
+      }
+    },
+    [documentInfo.branchOffice.id, detailsInfo]
+  )
+
+  const optimizedDebounceClients = useMemo(
+    () => debounce(ModalActions.FIND_CLIENT),
+    [debounce]
+  )
+  const optimizedDebounceProducts = useMemo(
+    () => debounce(ModalActions.FIND_PRODUCT),
+    [debounce]
+  )
 
   const handleSubmit = () => {
     console.log('objectToSubmit', documentInfo)
   }
+
+  const restartProductSearch = () => {
+    setLocalSearchProduct('')
+  }
+
   return (
     <section className='w-full bg-slate-100 flex justify-center items-start pt-[20%]'>
       <div className='w-full max-w-[80%]'>
@@ -105,7 +145,7 @@ const NewSale = () => {
                 onClick={() => {
                   setModalInfo({
                     isOpen: true,
-                    modalType: modalActions.FIND_CLIENT,
+                    modalType: ModalActions.FIND_CLIENT,
                   })
                 }}
               >
@@ -130,7 +170,7 @@ const NewSale = () => {
                 onClick={() => {
                   setModalInfo({
                     isOpen: true,
-                    modalType: modalActions.FIND_BRANCHOFFICE,
+                    modalType: ModalActions.FIND_BRANCHOFFICE,
                   })
                 }}
               >
@@ -159,43 +199,28 @@ const NewSale = () => {
               <h3 className='text-lg text-gray-600 font-semibold'>Subtotal</h3>
             </div>
             {/* this would be a field */}
-            <div className='flex flex-col w-full mb-6 p-4 bg-slate-200 rounded-md'>
-              <div className='flex justify-end items-center'>
-                <div className='w-8 p-2 aspect-square bg-primaryBlue flex justify-center items-center'>
-                  <FontAwesomeIcon
-                    icon={faClose}
-                    className='text-white text-[1rem]'
-                  />
-                </div>
-              </div>
-              <div className='flex flex-col gap-2'>
-                <h3 className='text-lg text-gray-600 font-semibold'>Name</h3>
-                <div className='flex grow bg-white h-8'></div>
-              </div>
-              <div className='flex flex-col gap-2'>
-                <h3 className='text-lg text-gray-600 font-semibold'>
-                  Quantity
-                </h3>
-                <div className='flex grow bg-white h-8'></div>
-              </div>
-              <div className='flex flex-col gap-2'>
-                <h3 className='text-lg text-gray-600 font-semibold'>Price</h3>
-                <div className='flex grow bg-white h-8'></div>
-              </div>
-              <div className='flex flex-col gap-2'>
-                <h3 className='text-lg text-gray-600 font-semibold'>
-                  Subtotal
-                </h3>
-                <div className='flex grow bg-white h-8'></div>
-              </div>
-            </div>
+            {detailsInfo.map((productAdded) => {
+              return (
+                <DetailsItem
+                  isAdding={false}
+                  modalHandle={setModalInfo}
+                  productToAdd={productAdded}
+                  setProductToAdd={setProductToAdd}
+                  setDetailsInfo={setDetailsInfo}
+                  restartProductSearch={restartProductSearch}
+                  key={productAdded.product.id}
+                />
+              )
+            })}
+            <DetailsItem
+              isAdding={true}
+              modalHandle={setModalInfo}
+              productToAdd={productToAdd}
+              setProductToAdd={setProductToAdd}
+              setDetailsInfo={setDetailsInfo}
+              restartProductSearch={restartProductSearch}
+            />
             {/*  */}
-
-            <div className='flex w-full justify-end'>
-              <div className='py-4 px-8 bg-primaryBlue w-[40%] flex justify-center items-center text-white mb-4 '>
-                Add
-              </div>
-            </div>
 
             <div className='flex gap-4 mb-4 w-full justify-end'>
               <h3 className='text-lg text-gray-600 font-semibold'>Total</h3>
@@ -226,13 +251,13 @@ const NewSale = () => {
           >
             <div className='flex justify-between w-full mb-4'>
               <div>
-                {modalInfo.modalType === modalActions.FIND_CLIENT && (
+                {modalInfo.modalType === ModalActions.FIND_CLIENT && (
                   <div
                     className='py-2 px-4 bg-primaryBlue w-[150px] flex justify-center items-center text-white rounded-md'
                     onClick={() => {
                       setModalInfo({
                         isOpen: true,
-                        modalType: modalActions.CREATE_CLIENT,
+                        modalType: ModalActions.CREATE_CLIENT,
                       })
                     }}
                   >
@@ -250,14 +275,14 @@ const NewSale = () => {
             </div>
 
             {/* Search Existing Client */}
-            {modalInfo.modalType === modalActions.FIND_CLIENT && (
+            {modalInfo.modalType === ModalActions.FIND_CLIENT && (
               <div>
                 <div className='flex w-full gap-2'>
                   <input
                     type='search'
                     className='p-4'
                     placeholder='Search by client name'
-                    onChange={optimizedDebounce}
+                    onChange={optimizedDebounceClients}
                     value={localSearchClient}
                   />
                   <div className='flex justify-center items-center'>
@@ -306,7 +331,7 @@ const NewSale = () => {
             )}
 
             {/* Create New Client */}
-            {modalInfo.modalType === modalActions.CREATE_CLIENT && (
+            {modalInfo.modalType === ModalActions.CREATE_CLIENT && (
               <div>
                 <h2 className='text-primaryBlue font-extrabold mb-4 text-xl'>
                   Register new client
@@ -314,7 +339,7 @@ const NewSale = () => {
                 <CreateClientForm
                   handleCloseForm={() =>
                     setModalInfo({
-                      modalType: modalActions.FIND_CLIENT,
+                      modalType: ModalActions.FIND_CLIENT,
                       isOpen: true,
                     })
                   }
@@ -323,7 +348,7 @@ const NewSale = () => {
             )}
 
             {/* Select BranchOffice */}
-            {modalInfo.modalType === modalActions.FIND_BRANCHOFFICE && (
+            {modalInfo.modalType === ModalActions.FIND_BRANCHOFFICE && (
               <div>
                 <h2 className='text-primaryBlue font-extrabold mb-4 text-xl'>
                   Select a branchOffice
@@ -338,6 +363,7 @@ const NewSale = () => {
                           ...documentInfo,
                           branchOffice,
                         })
+                        setProductToAdd(productToAddInitialState)
                         setModalInfo(modalInitialState)
                       }}
                     >
@@ -352,6 +378,71 @@ const NewSale = () => {
                 </div>
               </div>
             )}
+
+            {/* Select Product */}
+            {modalInfo.modalType === ModalActions.FIND_PRODUCT &&
+              (documentInfo.branchOffice.country.length > 0 ? (
+                <div>
+                  <div className='flex w-full gap-2'>
+                    <input
+                      type='search'
+                      className='p-4'
+                      placeholder='Search product by name'
+                      onChange={optimizedDebounceProducts}
+                      value={localSearchProduct}
+                    />
+                    <div className='flex justify-center items-center'>
+                      <FontAwesomeIcon
+                        icon={faSearch}
+                        className='text-gray-600 text-[1rem] cursor-pointer'
+                      />
+                    </div>
+                  </div>
+                  <div className='w-full'>
+                    {localSearchProduct.length > 0 &&
+                      availableProducts.length > 0 &&
+                      availableProducts.map((product) => {
+                        return (
+                          <div
+                            key={product.id}
+                            className='flex justify-between items-center p-2 gap-3'
+                            onClick={() => {
+                              if (product.stock > 0) {
+                                setProductToAdd((prevState) => {
+                                  return {
+                                    ...prevState,
+                                    product,
+                                    quantity: 1,
+                                    subtotal: product.price * 1,
+                                  }
+                                })
+                                setModalInfo(modalInitialState)
+                              }
+                            }}
+                          >
+                            <p className='flex gap-2'>
+                              <span> {product.name}</span>
+                              <span> stock: {product.stock}</span>
+                            </p>
+                            <div className='w-[1.5rem] aspect-square border-[1px] rounded-md border-gray-500 p-1'>
+                              {productToAdd.product.id === product.id && (
+                                <div className='w-full bg-primaryBlue h-full rounded-sm'></div>
+                              )}
+                            </div>
+                          </div>
+                        )
+                      })}
+                    {localSearchProduct.length > 0 &&
+                      availableProducts.length < 1 && (
+                        <div className='my-4 text-gray-600'>
+                          There are no products with that name
+                        </div>
+                      )}
+                  </div>
+                </div>
+              ) : (
+                <div>Select a BranchOffice first</div>
+              ))}
           </div>
         </aside>
       )}

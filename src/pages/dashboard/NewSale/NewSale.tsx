@@ -1,67 +1,30 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useAppContext } from '../../context/appContext'
+import { useAppContext } from '../../../context/appContext'
 import { faPlus, faSearch, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import { clientsFilter } from '../../utils/handleClients'
+import { clientsFilter } from '../../../utils/handleClients'
 import { v4 as uuidv4 } from 'uuid'
-
-import { ClientType, ProductType, SaleType } from '../../types/dataTypes'
-import CreateClientForm from '../../components/Forms/CreateClientForm'
-import branchOffices from '../../data/branchOffices'
-import DetailsItem from '../../components/newSale/DetailsItem'
-import { productsFilter } from '../../utils/handleProducts'
+import { ClientType, ProductType, SaleType } from '../../../types/dataTypes'
+import CreateClientForm from '../../../components/Forms/CreateClientForm'
+import branchOffices from '../../../data/branchOffices'
+import DetailsItem from '../../../components/newSale/DetailsItem'
+import { productsFilter } from '../../../utils/handleProducts'
 import {
   ModalActions,
   ModalStateType,
   ProductToAddStateType,
-} from '../types/newSalePage'
-import { createSale } from '../../utils/handleSales'
-
-const documentInfoInitialState = {
-  sellerRUT: '',
-  client: {
-    RUT: '',
-    name: '',
-    lastName: '',
-    email: '',
-    address: {
-      street: '',
-      number: '',
-      neighborhood: '',
-      city: '',
-    },
-    phone: '',
-  },
-  branchOffice: {
-    id: NaN,
-    country: '',
-    currency: '',
-  },
-}
-
-const modalInitialState = {
-  isOpen: false,
-  modalType: '',
-}
-
-export const productToAddInitialState = {
-  product: {
-    id: NaN,
-    name: '',
-    price: NaN,
-    stock: NaN,
-    branchOfficeId: NaN,
-  },
-  quantity: NaN,
-  subtotal: NaN,
-}
-
-const alertInitialState = {
-  isActive: false,
-  alertMessage: '',
-}
+} from '../../types/newSalePage'
+import { createSale } from '../../../utils/handleSales'
+import {
+  modalInitialState,
+  documentInfoInitialState,
+  productToAddInitialState,
+  alertInitialState,
+} from './initialStates'
+import { useNavigate } from 'react-router-dom'
 
 const NewSale = () => {
+  const navigate = useNavigate()
   const { seller } = useAppContext()
   const [modalInfo, setModalInfo] = useState<ModalStateType>(modalInitialState)
   const [documentInfo, setDocumentInfo] = useState(documentInfoInitialState)
@@ -147,6 +110,7 @@ const NewSale = () => {
         total: saleTotal,
       }
       createSale(objectToSubmit)
+      navigate('/all-sales')
     }
   }
 

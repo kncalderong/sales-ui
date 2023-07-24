@@ -1,5 +1,5 @@
 import AllSales from './AllSales'
-import NewSale from './NewSale'
+import NewSale from './NewSale/NewSale'
 import Profile from './Profile'
 import Sale from './Sale'
 import SharedLayout from './SharedLayout'

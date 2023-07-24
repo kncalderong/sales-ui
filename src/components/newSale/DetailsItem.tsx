@@ -1,6 +1,6 @@
 import { faClose } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { productToAddInitialState } from '../../pages/dashboard/NewSale'
+import { productToAddInitialState } from '../../pages/dashboard/NewSale/initialStates'
 import React from 'react'
 import {
   ModalStateType,

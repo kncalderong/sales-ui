@@ -91,7 +91,10 @@ const AllSales = () => {
         <div className='w-full flex flex-col items-start gap-8 mb-6 justify-center lg:mb-12'>
           {salesData.length > 0 ? (
             salesData.map((sale) => (
-              <div className='flex justify-between w-full items-center bg-white p-4 rounded-md lg:p-0 lg:bg-slate-100 '>
+              <div
+                className='flex justify-between w-full items-center bg-white p-4 rounded-md lg:p-0 lg:bg-slate-100 '
+                key={sale.saleId}
+              >
                 <div className='text-gray-700 flex gap-4 flex-col lg:flex-row'>
                   <div> {sale.date} </div>
                   <div className='flex gap-2'>

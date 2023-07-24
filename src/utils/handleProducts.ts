@@ -1,4 +1,4 @@
-import { ProductToAddStateType } from './../pages/types/newSalePage'
+import { ProductToAddStateType } from '../pages/types/newSalePage'
 import products from '../data/products'
 
 const productsFilter = (

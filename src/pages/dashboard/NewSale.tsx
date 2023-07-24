@@ -9,7 +9,7 @@ import { ClientType, ProductType, SaleType } from '../../types/dataTypes'
 import CreateClientForm from '../../components/Forms/CreateClientForm'
 import branchOffices from '../../data/branchOffices'
 import DetailsItem from '../../components/newSale/DetailsItem'
-import { productsFilter } from '../../utils/productsFilter'
+import { productsFilter } from '../../utils/handleProducts'
 import {
   ModalActions,
   ModalStateType,

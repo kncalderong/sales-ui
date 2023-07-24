@@ -1,4 +1,5 @@
 import clients from '../data/clients'
+import { ClientType } from '../types/dataTypes'
 
 const clientsFilter = (targetName: string) => {
   if (targetName.length < 1) return []
@@ -8,4 +9,10 @@ const clientsFilter = (targetName: string) => {
   return filteredClients
 }
 
-export { clientsFilter }
+const createClient = (client: ClientType) => {
+  if (client) {
+    clients.push(client)
+  }
+}
+
+export { clientsFilter, createClient }

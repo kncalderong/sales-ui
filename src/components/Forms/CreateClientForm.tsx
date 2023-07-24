@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import FormRow from './FormRow'
 import { v4 as uuidv4 } from 'uuid'
-import { createClient } from '../../utils/createClient'
+import { createClient } from '../../utils/handleClients'
 
 const CreateClientForm = ({
   handleCloseForm,

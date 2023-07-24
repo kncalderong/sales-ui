@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppContext } from '../../context/appContext'
 import { faPlus, faSearch, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import { clientsFilter } from '../../utils/clientsFilter'
+import { clientsFilter } from '../../utils/handleClients'
 import { v4 as uuidv4 } from 'uuid'
 
 import { ClientType, ProductType, SaleType } from '../../types/dataTypes'

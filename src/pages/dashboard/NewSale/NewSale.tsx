@@ -2,9 +2,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppContext } from '../../../context/appContext'
 import { faPlus, faSearch, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import { clientsFilter } from '../../../utils/handleClients'
+
 import { v4 as uuidv4 } from 'uuid'
-import { ClientType, ProductType, SaleType } from '../../../types/dataTypes'
+import { ProductType, SaleType } from '../../../types/dataTypes'
 import CreateClientForm from '../../../components/Forms/CreateClientForm'
 import branchOffices from '../../../data/branchOffices'
 import DetailsItem from '../../../components/newSale/DetailsItem'
@@ -22,6 +22,7 @@ import {
   alertInitialState,
 } from './initialStates'
 import { useNavigate } from 'react-router-dom'
+import SearchClient from '../../../components/newSale/modal/SearchClient'
 
 const NewSale = () => {
   const navigate = useNavigate()
@@ -33,50 +34,27 @@ const NewSale = () => {
   const [validationAlert, setValidationAlert] = useState(alertInitialState)
   const [saleTotal, setSaleTotal] = useState(0)
 
-  const [localSearchClient, setLocalSearchClient] = useState('')
-  const [availableClients, setAvailableClients] = useState<ClientType[]>([])
-
   const [localSearchProduct, setLocalSearchProduct] = useState('')
   const [availableProducts, setAvailableProducts] = useState<ProductType[]>([])
 
-  const debounce = useCallback(
-    (option: ModalActions) => {
-      let timeoutID: ReturnType<typeof setTimeout>
-      return (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (option === ModalActions.FIND_CLIENT) {
-          setLocalSearchClient(e.target.value)
-        }
-        if (option === ModalActions.FIND_PRODUCT) {
-          setLocalSearchProduct(e.target.value)
-        }
-        clearTimeout(timeoutID)
-        timeoutID = setTimeout(() => {
-          if (option === ModalActions.FIND_CLIENT) {
-            setAvailableClients(clientsFilter(e.target.value))
-          }
-          if (option === ModalActions.FIND_PRODUCT) {
-            setAvailableProducts(
-              productsFilter(
-                e.target.value,
-                documentInfo.branchOffice.id,
-                detailsInfo
-              )
-            )
-          }
-        }, 80)
-      }
-    },
-    [documentInfo.branchOffice.id, detailsInfo]
-  )
+  const debounce = useCallback(() => {
+    let timeoutID: ReturnType<typeof setTimeout>
+    return (e: React.ChangeEvent<HTMLInputElement>) => {
+      setLocalSearchProduct(e.target.value)
+      clearTimeout(timeoutID)
+      timeoutID = setTimeout(() => {
+        setAvailableProducts(
+          productsFilter(
+            e.target.value,
+            documentInfo.branchOffice.id,
+            detailsInfo
+          )
+        )
+      }, 80)
+    }
+  }, [documentInfo.branchOffice.id, detailsInfo])
 
-  const optimizedDebounceClients = useMemo(
-    () => debounce(ModalActions.FIND_CLIENT),
-    [debounce]
-  )
-  const optimizedDebounceProducts = useMemo(
-    () => debounce(ModalActions.FIND_PRODUCT),
-    [debounce]
-  )
+  const optimizedDebounceProducts = useMemo(() => debounce(), [debounce])
 
   const handleSubmit = () => {
     if (documentInfo.client.RUT === '') {
@@ -124,6 +102,10 @@ const NewSale = () => {
     }, 0)
     setSaleTotal(calcTotal)
   }, [detailsInfo])
+
+  const closeModal = () => {
+    setModalInfo(modalInitialState)
+  }
 
   return (
     <section className='w-full bg-slate-100 flex justify-center items-start pt-[20%] lg:py-[5.5rem]'>
@@ -306,58 +288,11 @@ const NewSale = () => {
 
             {/* Search Existing Client */}
             {modalInfo.modalType === ModalActions.FIND_CLIENT && (
-              <div className='w-full'>
-                <div className='flex w-full gap-2'>
-                  <input
-                    type='search'
-                    className='p-4 grow'
-                    placeholder='Search by client name'
-                    onChange={optimizedDebounceClients}
-                    value={localSearchClient}
-                  />
-                  <div className='flex justify-center items-center'>
-                    <FontAwesomeIcon
-                      icon={faSearch}
-                      className='text-gray-400 text-[1rem] cursor-pointer'
-                    />
-                  </div>
-                </div>
-                <div className='w-full'>
-                  {localSearchClient.length > 0 &&
-                    availableClients.length > 0 &&
-                    availableClients.map((client) => {
-                      return (
-                        <div
-                          key={client.RUT}
-                          className='flex justify-between items-center p-2 gap-3 cursor-pointer'
-                          onClick={() => {
-                            setDocumentInfo({
-                              ...documentInfo,
-                              client,
-                            })
-                            setModalInfo(modalInitialState)
-                          }}
-                        >
-                          <p className='flex gap-2'>
-                            <span> {client.name}</span>
-                            <span> {client.lastName}</span>
-                          </p>
-                          <div className='w-[1.5rem] aspect-square border-[1px] rounded-md border-gray-500 p-1'>
-                            {documentInfo.client.RUT === client.RUT && (
-                              <div className='w-full bg-primaryBlue h-full rounded-sm'></div>
-                            )}
-                          </div>
-                        </div>
-                      )
-                    })}
-                  {localSearchClient.length > 0 &&
-                    availableClients.length < 1 && (
-                      <div className='my-4 text-gray-400'>
-                        There are no clients with that name
-                      </div>
-                    )}
-                </div>
-              </div>
+              <SearchClient
+                closeModal={closeModal}
+                setDocumentInfo={setDocumentInfo}
+                documentInfo={documentInfo}
+              />
             )}
 
             {/* Create New Client */}

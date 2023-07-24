@@ -88,7 +88,10 @@ const Sale = () => {
           </h3>
           <div className=' flex flex-col gap-4'>
             {saleData?.details.map((product) => (
-              <div className='bg-white rounded-lg p-4 w-[80%]'>
+              <div
+                className='bg-white rounded-lg p-4 w-[80%]'
+                key={product.product.id}
+              >
                 <h2 className='text-primaryBlue font-bold'>
                   {product.product.name}
                 </h2>

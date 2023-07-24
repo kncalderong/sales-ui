@@ -115,9 +115,9 @@ const DetailsItem = ({
           </div>
         </div>
         {!isAdding && (
-          <div className='justify-end items-center hidden lg:flex lg:absolute right-[-3rem] cursor-pointer'>
+          <div className='justify-end items-center hidden lg:flex lg:absolute right-[-3rem] cursor-pointer lg:right-[-4rem]'>
             <div
-              className='w-8 p-2 aspect-square bg-primaryBlue flex justify-center items-center'
+              className='w-8 p-2 aspect-square bg-primaryBlue flex justify-center items-center lg:w-12'
               onClick={() => {
                 setDetailsInfo((prevState) => {
                   const itemToErase = prevState.findIndex(

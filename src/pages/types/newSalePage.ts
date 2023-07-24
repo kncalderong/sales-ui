@@ -1,3 +1,5 @@
+import { BranchOfficeType, ClientType } from '../../types/dataTypes'
+
 export enum ModalActions {
   FIND_CLIENT,
   CREATE_CLIENT,
@@ -20,4 +22,10 @@ export type ProductToAddStateType = {
   }
   quantity: number
   subtotal: number
+}
+
+export type DocumentInfoType = {
+  sellerRUT: string
+  client: ClientType
+  branchOffice: BranchOfficeType
 }

@@ -14,7 +14,6 @@ type DetailsItem = {
   productToAdd: ProductToAddStateType
   setProductToAdd: React.Dispatch<React.SetStateAction<ProductToAddStateType>>
   setDetailsInfo: React.Dispatch<React.SetStateAction<ProductToAddStateType[]>>
-  restartProductSearch: () => void
 }
 
 const DetailsItem = ({
@@ -23,7 +22,6 @@ const DetailsItem = ({
   productToAdd,
   setProductToAdd,
   setDetailsInfo,
-  restartProductSearch,
 }: DetailsItem) => {
   return (
     <div className='flex flex-col w-full mb-6 p-4 bg-slate-200 rounded-md gap-4 lg:bg-slate-100 lg:px-0'>
@@ -146,7 +144,6 @@ const DetailsItem = ({
                   return [...prevState, productToAdd]
                 })
                 setProductToAdd(productToAddInitialState)
-                restartProductSearch()
               }
             }}
           >

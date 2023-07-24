@@ -1,14 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAppContext } from '../../../context/appContext'
-import { faPlus, faSearch, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { useState, useMemo, useCallback, useEffect } from 'react'
-
+import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { useState, useEffect } from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import { ProductType, SaleType } from '../../../types/dataTypes'
+import { SaleType } from '../../../types/dataTypes'
 import CreateClientForm from '../../../components/Forms/CreateClientForm'
 import branchOffices from '../../../data/branchOffices'
 import DetailsItem from '../../../components/newSale/DetailsItem'
-import { productsFilter } from '../../../utils/handleProducts'
+
 import {
   ModalActions,
   ModalStateType,
@@ -23,6 +22,7 @@ import {
 } from './initialStates'
 import { useNavigate } from 'react-router-dom'
 import SearchClient from '../../../components/newSale/modal/SearchClient'
+import SearchProduct from '../../../components/newSale/modal/SearchProduct'
 
 const NewSale = () => {
   const navigate = useNavigate()
@@ -33,28 +33,6 @@ const NewSale = () => {
   const [productToAdd, setProductToAdd] = useState(productToAddInitialState)
   const [validationAlert, setValidationAlert] = useState(alertInitialState)
   const [saleTotal, setSaleTotal] = useState(0)
-
-  const [localSearchProduct, setLocalSearchProduct] = useState('')
-  const [availableProducts, setAvailableProducts] = useState<ProductType[]>([])
-
-  const debounce = useCallback(() => {
-    let timeoutID: ReturnType<typeof setTimeout>
-    return (e: React.ChangeEvent<HTMLInputElement>) => {
-      setLocalSearchProduct(e.target.value)
-      clearTimeout(timeoutID)
-      timeoutID = setTimeout(() => {
-        setAvailableProducts(
-          productsFilter(
-            e.target.value,
-            documentInfo.branchOffice.id,
-            detailsInfo
-          )
-        )
-      }, 80)
-    }
-  }, [documentInfo.branchOffice.id, detailsInfo])
-
-  const optimizedDebounceProducts = useMemo(() => debounce(), [debounce])
 
   const handleSubmit = () => {
     if (documentInfo.client.RUT === '') {
@@ -90,10 +68,6 @@ const NewSale = () => {
       createSale(objectToSubmit)
       navigate('/all-sales')
     }
-  }
-
-  const restartProductSearch = () => {
-    setLocalSearchProduct('')
   }
 
   useEffect(() => {
@@ -210,7 +184,6 @@ const NewSale = () => {
                   productToAdd={productAdded}
                   setProductToAdd={setProductToAdd}
                   setDetailsInfo={setDetailsInfo}
-                  restartProductSearch={restartProductSearch}
                   key={productAdded.product.id}
                 />
               )
@@ -221,7 +194,6 @@ const NewSale = () => {
               productToAdd={productToAdd}
               setProductToAdd={setProductToAdd}
               setDetailsInfo={setDetailsInfo}
-              restartProductSearch={restartProductSearch}
             />
             {/*  */}
 
@@ -348,64 +320,13 @@ const NewSale = () => {
             {/* Select Product */}
             {modalInfo.modalType === ModalActions.FIND_PRODUCT &&
               (documentInfo.branchOffice.country.length > 0 ? (
-                <div className='w-full'>
-                  <div className='flex w-full gap-2 justify-between'>
-                    <input
-                      type='search'
-                      className='p-4 grow'
-                      placeholder='Search product by name'
-                      onChange={optimizedDebounceProducts}
-                      value={localSearchProduct}
-                    />
-                    <div className='flex justify-center items-center'>
-                      <FontAwesomeIcon
-                        icon={faSearch}
-                        className='text-gray-400 text-[1rem] cursor-pointer'
-                      />
-                    </div>
-                  </div>
-                  <div className='w-full'>
-                    {localSearchProduct.length > 0 &&
-                      availableProducts.length > 0 &&
-                      availableProducts.map((product) => {
-                        return (
-                          <div
-                            key={product.id}
-                            className='flex justify-between items-center p-2 gap-3 cursor-pointer'
-                            onClick={() => {
-                              if (product.stock > 0) {
-                                setProductToAdd((prevState) => {
-                                  return {
-                                    ...prevState,
-                                    product,
-                                    quantity: 1,
-                                    subtotal: product.price * 1,
-                                  }
-                                })
-                                setModalInfo(modalInitialState)
-                              }
-                            }}
-                          >
-                            <p className='flex gap-2'>
-                              <span> {product.name}</span>
-                              <span> stock: {product.stock}</span>
-                            </p>
-                            <div className='w-[1.5rem] aspect-square border-[1px] rounded-md border-gray-500 p-1'>
-                              {productToAdd.product.id === product.id && (
-                                <div className='w-full bg-primaryBlue h-full rounded-sm'></div>
-                              )}
-                            </div>
-                          </div>
-                        )
-                      })}
-                    {localSearchProduct.length > 0 &&
-                      availableProducts.length < 1 && (
-                        <div className='my-4 text-gray-400'>
-                          There are no products with that name
-                        </div>
-                      )}
-                  </div>
-                </div>
+                <SearchProduct
+                  closeModal={closeModal}
+                  detailsInfo={detailsInfo}
+                  setProductToAdd={setProductToAdd}
+                  documentInfo={documentInfo}
+                  productToAdd={productToAdd}
+                />
               ) : (
                 <div>Select a BranchOffice first</div>
               ))}

@@ -1,4 +1,4 @@
-import { BranchOfficeType } from './types/dataBaseTypes'
+import { BranchOfficeType } from '../types/dataTypes'
 
 const branchOffices: BranchOfficeType[] = [
   {

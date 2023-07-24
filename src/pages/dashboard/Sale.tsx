@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import { getSaleById } from '../../utils/handleSales'
 import { useEffect, useState } from 'react'
-import { SaleType } from '../../data/types/dataBaseTypes'
+import { SaleType } from '../../types/dataTypes'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 

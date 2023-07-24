@@ -1,4 +1,4 @@
-import { ProductType } from './types/dataBaseTypes'
+import { ProductType } from '../types/dataTypes'
 
 const products: ProductType[] = [
   {

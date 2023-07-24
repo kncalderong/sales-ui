@@ -1,5 +1,5 @@
 import { sales } from '../data/sales'
-import { SaleType } from '../data/types/dataBaseTypes'
+import { SaleType } from '../types/dataTypes'
 
 const createSale = (client: SaleType) => {
   if (client) {

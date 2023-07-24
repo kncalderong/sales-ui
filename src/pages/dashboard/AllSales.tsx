@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getSales } from '../../utils/handleSales'
-import { SaleType } from '../../data/types/dataBaseTypes'
+import { SaleType } from '../../types/dataTypes'
 import { useNavigate } from 'react-router-dom'
 
 const AllSales = () => {

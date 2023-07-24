@@ -1,4 +1,4 @@
-import { SaleType } from './types/dataBaseTypes'
+import { SaleType } from '../types/dataTypes'
 
 const sales: SaleType[] = [
   {

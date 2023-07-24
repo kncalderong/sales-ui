@@ -5,11 +5,7 @@ import { useState, useMemo, useCallback, useEffect } from 'react'
 import { clientsFilter } from '../../utils/clientsFilter'
 import { v4 as uuidv4 } from 'uuid'
 
-import {
-  ClientType,
-  ProductType,
-  SaleType,
-} from '../../data/types/dataBaseTypes'
+import { ClientType, ProductType, SaleType } from '../../types/dataTypes'
 import CreateClientForm from '../../components/Forms/CreateClientForm'
 import branchOffices from '../../data/branchOffices'
 import DetailsItem from '../../components/newSale/DetailsItem'
@@ -369,7 +365,7 @@ const NewSale = () => {
                       return (
                         <div
                           key={client.RUT}
-                          className='flex justify-between items-center p-2 gap-3'
+                          className='flex justify-between items-center p-2 gap-3 cursor-pointer'
                           onClick={() => {
                             setDocumentInfo({
                               ...documentInfo,

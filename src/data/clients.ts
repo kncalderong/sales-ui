@@ -1,4 +1,4 @@
-import { ClientType } from './types/dataBaseTypes'
+import { ClientType } from '../types/dataTypes'
 
 const clients: ClientType[] = [
   {

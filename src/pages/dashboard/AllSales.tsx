@@ -88,12 +88,13 @@ const AllSales = () => {
           </div>
         </div>
         {/* data */}
-        <div className='w-full flex flex-col items-start gap-6 mb-6 justify-center lg:mb-12'>
+        <div className='w-full flex flex-col items-start gap-8 mb-6 justify-center lg:mb-12'>
           {salesData.length > 0 ? (
             salesData.map((sale) => (
-              <div className='flex justify-between w-full'>
-                <div className='text-gray-700'>
-                  <div>
+              <div className='flex justify-between w-full items-center bg-white p-4 rounded-md lg:p-0 lg:bg-slate-100 '>
+                <div className='text-gray-700 flex gap-4 flex-col lg:flex-row'>
+                  <div> {sale.date} </div>
+                  <div className='flex gap-2'>
                     <span>{sale.client.name}</span>
                     <span>{sale.client.lastName}</span>
                   </div>
@@ -103,7 +104,7 @@ const AllSales = () => {
                   </div>
                 </div>
                 <div
-                  className='bg-primaryBlue text-white font-extrabold px-4 py-2 flex justify-center items-center cursor-pointer'
+                  className='bg-primaryBlue text-white font-extrabold px-4 py-2 flex justify-center items-center cursor-pointer h-14'
                   onClick={() => {
                     navigate(`/sales/${sale.saleId}`)
                   }}

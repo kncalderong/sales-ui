@@ -17,4 +17,10 @@ const getSales = (targetCountry: string = '') => {
   return filteredSalesByCountry
 }
 
-export { getSales, createSale }
+const getSaleById = (targetId: string) => {
+  const sale = sales.find((s) => s.saleId === targetId)
+  if (!sale) return null
+  return sale
+}
+
+export { getSales, createSale, getSaleById }
